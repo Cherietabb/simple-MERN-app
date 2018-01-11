@@ -18,11 +18,8 @@ const loggedOutOnly = (req, res, next) => {
 
 // Register form
 router.get('/register', (req, res, next) => {
-	User.find({})
-		.then((user) => {
-			res.send(user);
-			//res.render('/register')
-		}).catch(next);
+	res.send(user);
+	//res.render('/register')
 });
 
 router.get('*', (req, res, next) => {
@@ -38,7 +35,7 @@ router.post('/register', (req, res, next) => {
 });
 
 router.get('/login', (req, res, next) => {
-	res.render('login');
+	// res.render('login');
 });
 
 router.post(
@@ -49,7 +46,6 @@ router.post(
 			failureFlash: true
 		})(req, res, next);
 	});
-
 
 module.exports = router;
 

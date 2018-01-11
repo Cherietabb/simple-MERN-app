@@ -31,8 +31,6 @@ app.use(bodyParser.json());
 app.use('/users', require('./routes/userRoutes'));
 app.use('/profiles', require('./routes/profileRoutes'));
 
-// require('./services/passport')(passport);
-
 app.use(passport.initialize());
 app.use(passport.session());
 

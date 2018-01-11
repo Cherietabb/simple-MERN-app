@@ -1,6 +1,3 @@
-// This will become its own Schema, separate from the User Schema
-// This Schema may need to be renamed
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -18,4 +15,4 @@ const ProfileSchema = new Schema({
 
 const Profile = mongoose.model('Profile', ProfileSchema);
 
-module.exports = ProfileSchema;
+module.exports = Profile;

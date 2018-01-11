@@ -6,6 +6,7 @@ router.get('/', (req, res, next) => {
 	Profile.find({})
 		.then((profile) => {
 			res.send(profile);
+			//res.render('/')
 		}).catch(next);
 });
 
@@ -20,10 +21,10 @@ router.post('/add', (req, res, next) => {
 		}).catch(next);
 });
 
-router.put('/profile/edit/:id', (req, res, next) => {
+router.put('/edit/:id', (req, res, next) => {
 	Profile.findByIdAndUpdate({_id: req.params.id}, req.body)
 		.then(() => {
-			profile.findOne({_id: req.params.id})
+			Profile.findOne({_id: req.params.id})
 				.then((profile) => {
 					res.send(profile)
 					// res.redirect('/')
@@ -31,10 +32,10 @@ router.put('/profile/edit/:id', (req, res, next) => {
 		});
 });
 
-router.delete('/profile/:id', (req, res, next) => {
+router.delete('/:id', (req, res, next) => {
 	Profile.findByIdAndRemove({_id: req.params.id}, req.body)
 		.then(() => {
-			profile.findOne({_id: req.params.id})
+			Profile.findOne({_id: req.params.id})
 				.then((profile) => {
 					res.send(profile)
 					//res.redirect('/')
