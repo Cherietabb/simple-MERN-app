@@ -20,7 +20,7 @@ passport.deserializeUser((id, done) => {
 });
 
 // GoogleStrategy has an internal identifier of  the string google.
-passport.use('login', new LocalStrategy(
+passport.use(new LocalStrategy(
 	(username, email, password, done) => {
 		User.findOne({username: username}, (err, user) => {
 			if (err) {
