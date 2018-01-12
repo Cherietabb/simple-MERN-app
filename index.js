@@ -28,12 +28,6 @@ app.use(express.static('public'));
 
 app.use(bodyParser.json());
 
-app.use('/users', require('./routes/userRoutes'));
-app.use('/profiles', require('./routes/profileRoutes'));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use(session({
 	secret: keys.cookieSession,
 	resave: false,
@@ -41,6 +35,12 @@ app.use(session({
 	cookie: { secure: true },
 	maxAge: 30 * 24 * 60 * 60 * 1000
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/users', require('./routes/userRoutes'));
+app.use('/profiles', require('./routes/profileRoutes'));
 
 const port = process.env.port || 4000;
 

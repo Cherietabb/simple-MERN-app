@@ -1,10 +1,9 @@
-// Clean up this file to become the basis for logging in users.
-// Add bcryptjs?
-
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
+
+const SALT_FACTOR = 10;
 
 const UserSchema = new Schema({
 	name: {
@@ -32,17 +31,29 @@ const UserSchema = new Schema({
 
 UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 
-UserSchema.pre('save', (next) => {
-	const SALT_FACTOR = 10;
+UserSchema.pre('save', function(next) {
+	let user = this;
 
 	if (!user.isModified('password')) return next();
 
-	bcrypt.genSalt(SALT_FACTOR, (err, salt) => {
-		if (err) return next(err);
-
-		bcrypt.hash(user.password, salt, null, (err, hash) => {
+	bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
 			if (err) return next(err);
-			User.password = hash;
+			bcrypt.hash(user.password, salt, function(err, hash) {
+				if (err) return next(err);
+				user.password = hash;
+				next();
+			});
+		});
+});
+
+UserSchema.pre('update', function (next) {
+	let user = this;
+
+	bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
+		if(err) return next(err);
+		bcrypt.hash(user.password, salt, function (err, hash) {
+			if(err) return next(err);
+			user.password = hash;
 			next();
 		});
 	});

@@ -21,15 +21,17 @@ router.get('/register', function(req, res, next) {
 		user: req.user
 	}).catch(next);
 });
-router.get('*', (req, res, next) => {
-	res.locals.user = req.user || null;
-	next();
-});
+
+// router.get('*', (req, res, next) => {
+// 	res.locals.user = req.user || null;
+// 	next();
+// });
 
 router.post('/register', function(req, res, next) {
 	User.create(req.body)
 		.then((user) => {
 			res.send(user)
+			// res.redirect('/')
 		}).catch(next)
 });
 
@@ -56,6 +58,8 @@ router.get('/forgot', (req, res) => {
 		user: req.user
 	});
 });
+
+// router.put('/update', (req, res))
 
 module.exports = router;
 
