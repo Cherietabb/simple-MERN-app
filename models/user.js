@@ -30,18 +30,22 @@ const UserSchema = new Schema({
 	}
 });
 
-UserSchema.pre('save', next => {
-	const user = this;
-	if (!user.isModified(password)) {
-		return next();
-	}
-	return bcrypt
-		.hash(user, password, 10)
-		.then(hashedPassword => {
-			user.password = hashedPassword;
-			return next();
-		})
-		.catch(next);
+UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
+
+UserSchema.pre('save', (next) => {
+	const SALT_FACTOR = 10;
+
+	if (!user.isModified('password')) return next();
+
+	bcrypt.genSalt(SALT_FACTOR, (err, salt) => {
+		if (err) return next(err);
+
+		bcrypt.hash(user.password, salt, null, (err, hash) => {
+			if (err) return next(err);
+			User.password = hash;
+			next();
+		});
+	});
 });
 
 UserSchema.methods.comparePassword = (password, next) => {
@@ -53,8 +57,6 @@ UserSchema.methods.comparePassword = (password, next) => {
 		return next(null, isMatch);
 	});
 };
-
-UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 
 const User = mongoose.model('User', UserSchema);
 

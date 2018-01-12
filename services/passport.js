@@ -20,8 +20,8 @@ passport.deserializeUser((id, done) => {
 });
 
 // GoogleStrategy has an internal identifier of  the string google.
-passport.use(new LocalStrategy(
-	(username, password, done) => {
+passport.use('login', new LocalStrategy(
+	(username, email, password, done) => {
 		User.findOne({username: username}, (err, user) => {
 			if (err) {
 				return done(err);
@@ -29,7 +29,7 @@ passport.use(new LocalStrategy(
 			if (!user) {
 				return done(null, false, {message: 'No user found'});
 			}
-			if (!user.verifyPassword) {
+			if (!user.password) {
 				return done(null, false);
 			}
 			bcrypt.compare(password, user.password, (err, isMatch) => {
