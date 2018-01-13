@@ -6,7 +6,7 @@ router.get('/', (req, res, next) => {
 	Profile.find({})
 		.then((profile) => {
 			res.send(profile);
-			//res.render('/')
+			res.render('/')
 		}).catch(next);
 });
 
@@ -14,11 +14,9 @@ router.get('/', (req, res, next) => {
 router.post('/add', (req, res, next) => {
 	Profile.create(req.body)
 		.then((profile) => {
-			res.send(profile)
-			// res.render('edit_profile', {
-				//profile: profile
-			// )
-		}).catch(next);
+			res.send(profile);
+			res.render('/add_profile', {profile: profile})
+				.catch(next);
 });
 
 router.put('/edit/:id', (req, res, next) => {
