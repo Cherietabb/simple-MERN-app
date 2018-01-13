@@ -17,6 +17,7 @@ router.post('/add', (req, res, next) => {
 			res.send(profile);
 			res.render('/add_profile', {profile: profile})
 				.catch(next);
+		});
 });
 
 router.put('/edit/:id', (req, res, next) => {
