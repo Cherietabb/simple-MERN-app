@@ -1,10 +1,12 @@
 // add express-messages module
 
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('cookie-session');
+const path = require('path');
 
 const keys = require('./config/keys');
 
@@ -24,9 +26,11 @@ db.on('error', (err) => {
 	console.log(err);
 });
 
-app.use(express.static('public'));
-
+app.set('views', path.join(__dirname, '../client'));
+app.use(express.static(path.join(__dirname, '../client')));
+app.use(cors());
 app.use(bodyParser.json());
+
 
 app.use(session({
 	secret: keys.cookieSession,
@@ -36,6 +40,11 @@ app.use(session({
 	maxAge: 30 * 24 * 60 * 60 * 1000
 }));
 
+app.use((err, req, res, next) => {
+	res.status(422).send({error: err.message});
+	next();
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -43,10 +52,6 @@ app.use('/users', require('./routes/userRoutes'));
 app.use('/profiles', require('./routes/profileRoutes'));
 
 const port = process.env.port || 4000;
-
-app.use((err, req, res, next) => {
-	res.status(422).send({error: err.message});
-});
 
 app.listen(port, () => {
 	console.log(`App currently running on port ${port}...`)

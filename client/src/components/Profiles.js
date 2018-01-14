@@ -53,6 +53,7 @@ componentDidMount() {
 			<div style={styles.root}>
 				<GridList
 					cellHeight={180}
+					cols={3}
 					style={styles.gridList}
 				>
 					<Subheader>Profiles</Subheader>
@@ -61,7 +62,6 @@ componentDidMount() {
 			</div>
 		)
 	}
-
 }
 
 export default Profiles;
