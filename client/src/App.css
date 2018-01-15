@@ -1,7 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Raleway|Lato:400');
-
-
 .App {
+  font-family: 'Roboto', serif;
+  font-weight: 400;
   text-align: center;
 }
 

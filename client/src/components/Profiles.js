@@ -5,14 +5,22 @@ import axios from 'axios';
 
 const styles = {
 	root: {
+		marginTop: '30px',
+		paddingTop: '10px',
 		display: 'flex',
 		flexWrap: 'wrap',
-		justifyContent: 'space-around',
+		justifyContent: 'center',
 	},
 	gridList: {
+		marginTop: '30px',
+		paddingTop: '20px',
+		display: 'flex',
+		flexDirection: 'row',
+		position: 'static',
 		width: 500,
 		height: 450,
 		overflowY: 'auto',
+		justifyContent: 'space-around'
 	},
 };
 

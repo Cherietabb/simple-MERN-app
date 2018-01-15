@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import {red400} from 'material-ui/styles/colors';
 
 const contentStyle = {
+	marginTop: '30px',
 	display: 'flex',
 	width: '80%',
 	padding: '50px',
@@ -13,6 +15,9 @@ const contentStyle = {
 const textFieldStyle = {
 	display: 'flex',
 	flexDirection: 'column',
+	errorStyle: {
+		color: red400
+	},
 };
 
 
@@ -35,11 +40,11 @@ class AddProfile extends Component {
 	validate = () => {
 		let isError = false;
 		const errors = {
-			name: ''
+			nameError: ''
 		};
 		if (!this.state.name) {
 			isError = true;
-			errors.name = "Name is required"
+			errors.nameError = "Name is required"
 		}
 		this.setState({
 			...this.state,
@@ -47,30 +52,26 @@ class AddProfile extends Component {
 		});
 
 		return isError;
-	}
-	;
+	};
 
 	handleSubmit = (e) => {
 		e.preventDefault();
 		const err = this.validate();
 		const {name, description} = this.state;
-		console.log(this.state);
 		if (!err) {
 			axios.post('http://localhost:4000/profiles/add_profile',
 				{name, description})
-				.then(function (response) {
+				.then((response) => {
 					this.setState({
+						serverMessage: response,
 						name: '',
 						description: ''
-					});
-					console.log('response:' + response);
+					})
 				})
 				.catch((error) => {
-					console.log(error)
-				});
+				console.log(error)
+			});
 		}
-		
-
 	};
 
 	render() {
@@ -101,7 +102,6 @@ class AddProfile extends Component {
 						onClick={this.handleSubmit}
 					>
 					</RaisedButton>
-
 				</form>
 			</div>
 		)
