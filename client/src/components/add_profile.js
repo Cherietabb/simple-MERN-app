@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import {red400} from 'material-ui/styles/colors';
+import {red300, blue400} from 'material-ui/styles/colors';
 
 const contentStyle = {
-	marginTop: '30px',
 	display: 'flex',
+	flexDirection: 'row',
+	flexWrap: 'wrap',
 	width: '80%',
-	padding: '50px',
 	justifyContent: 'center'
 };
 
@@ -16,8 +16,16 @@ const textFieldStyle = {
 	display: 'flex',
 	flexDirection: 'column',
 	errorStyle: {
-		color: red400
+		color: red300
 	},
+};
+
+const buttonStyle = {
+	display: 'flex',
+	flexDirection: 'right',
+	width: '60px',
+	backgroundColor: blue400,
+	marginTop: '90px'
 };
 
 
@@ -76,33 +84,42 @@ class AddProfile extends Component {
 
 	render() {
 		return (
-			<div style={contentStyle}>
-				<form>
-					<TextField
-						name="name"
-						hintText="Name"
-						floatingLabelText="Name"
-						style={textFieldStyle}
-						value={this.state.name}
-						onChange={this.handleInputChange}
-						errorText={this.state.nameError}
-					/>
-					<TextField
-						name="description"
-						hintText="Description"
-						floatingLabelText="description"
-						style={textFieldStyle}
-						value={this.state.description}
-						onChange={this.handleInputChange}
-					/>
-					<RaisedButton
-						label="Submit"
-						primary={true}
-						style={textFieldStyle}
-						onClick={this.handleSubmit}
-					>
-					</RaisedButton>
-				</form>
+			<div>
+				<RaisedButton
+					label="Back"
+					href="/"
+					style={buttonStyle}
+				/>
+
+				<div style={contentStyle}>
+					<form>
+						<TextField
+							name="name"
+							hintText="Name"
+							floatingLabelText="Name"
+							style={textFieldStyle}
+							value={this.state.name}
+							onChange={this.handleInputChange}
+							errorText={this.state.nameError}
+						/>
+						<TextField
+							name="description"
+							hintText="Description"
+							floatingLabelText="description"
+							style={textFieldStyle}
+							value={this.state.description}
+							onChange={this.handleInputChange}
+						/>
+						<RaisedButton
+							label="Submit"
+							primary={true}
+							style={textFieldStyle}
+							onClick={this.handleSubmit}
+						>
+						</RaisedButton>
+					</form>
+				</div>
+
 			</div>
 		)
 	}

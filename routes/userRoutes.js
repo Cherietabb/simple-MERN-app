@@ -31,16 +31,17 @@ router.post('/register', function(req, res, next) {
 	User.create(req.body)
 		.then((user) => {
 			res.send(user)
-			// res.redirect('/')
+			res.redirect('/')
 		}).catch(next)
 });
 
 router.get('/login', (req, res, next) => {
-	// res.render('login');
+	res.render('login', {
+		user: req.user
+	}).catch(next);
 });
 
-router.post(
-	'/login', (req, res, next) => {
+router.post('/login', (req, res, next) => {
 		passport.authenticate('local', {
 			successRedirect: '/',
 			failureRedirect: '/login',
