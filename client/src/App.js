@@ -8,8 +8,8 @@ import BottomNavigation from './components/BottomNavigation';
 import Profiles from './components/Profiles';
 import AddProfile from './components/add_profile';
 import SideDrawer from './components/SideDrawer';
-import Register from './Register';
-import Login from './Login';
+import Register from './components/Register';
+import Login from './components/Login';
 import './App.css';
 injectTapEventPlugin();
 
@@ -24,8 +24,8 @@ class App extends Component {
 						<Switch>
 								<Route exact path="/" component={Profiles}/>
 								<Route path="/add_profile" component={AddProfile} />
-								<Route path="/users/register" component={Register} />
-								<Route path="/users/login" component={Login} />
+								<Route path="/register" component={Register} />
+								<Route path="/login" component={Login} />
 						</Switch>
 						<BottomNavigation />
 					</div>

@@ -91,6 +91,7 @@ class Register extends Component {
 			axios.post('http://localhost:4000/users/register', {name, email, username, password})
 				.then((response) => {
 					this.setState({
+						serverMessage: response,
 						name: '',
 						email: '',
 						username: '',
@@ -105,57 +106,65 @@ class Register extends Component {
 
 	render() {
 		return (
-			<div style={contentStyle}>
-				<form>
-					<TextField
-						name="name"
-						hintText="Name"
-						floatingLabelText="Name"
-						style={textFieldStyle}
-						value={this.state.name}
-						onChange={this.handleInputChange}
-						errorText={this.state.nameError}
-					/>
-					<TextField
-						name="email"
-						hintText="Email"
-						floatingLabelText="Email"
-						style={textFieldStyle}
-						value={this.state.email}
-						onChange={this.handleInputChange}
-						errorText={this.state.emailError}
-					/>
+			<div>
+				<RaisedButton
+					label="Back"
+					href="/"
+					style={buttonStyle}
+				/>
 
-					<TextField
-						name="username"
-						hintText="Username"
-						floatingLabelText="Username"
-						style={textFieldStyle}
-						value={this.state.username}
-						onChange={this.handleInputChange}
-						errorText={this.state.usernameError}
-					/>
+				<div style={contentStyle}>
+					<form>
+						<TextField
+							name="name"
+							hintText="Name"
+							floatingLabelText="Name"
+							style={textFieldStyle}
+							value={this.state.name}
+							onChange={this.handleInputChange}
+							errorText={this.state.nameError}
+						/>
+						<TextField
+							name="email"
+							hintText="Email"
+							floatingLabelText="Email"
+							style={textFieldStyle}
+							value={this.state.email}
+							onChange={this.handleInputChange}
+							errorText={this.state.emailError}
+						/>
 
-					<TextField
-						name="password"
-						hintText="Password"
-						floatingLabelText="Password"
-						style={textFieldStyle}
+						<TextField
+							name="username"
+							hintText="Username"
+							floatingLabelText="Username"
+							style={textFieldStyle}
+							value={this.state.username}
+							onChange={this.handleInputChange}
+							errorText={this.state.usernameError}
+						/>
 
-						value={this.state.password}
-						onChange={this.handleInputChange}
-						errorText={this.state.password}>
-						<input type="password"/>
-					</TextField>
-					<RaisedButton
-						label="Submit"
-						primary={true}
-						style={textFieldStyle}
-						onClick={this.handleSubmit}
-					>
-					</RaisedButton>
+						<TextField
+							name="password"
+							hintText="Password"
+							floatingLabelText="Password"
+							style={textFieldStyle}
 
-				</form>
+							value={this.state.password}
+							onChange={this.handleInputChange}
+							errorText={this.state.password}>
+							<input type="password"/>
+						</TextField>
+
+						<RaisedButton
+							label="Submit"
+							primary={true}
+							style={textFieldStyle}
+							onClick={this.handleSubmit}
+						>
+						</RaisedButton>
+					</form>
+				</div>
 			</div>
 		);
 	}

@@ -67,6 +67,13 @@ class Login extends Component {
 		return isError;
 	};
 
+	handleCancel = (e) => {
+		this.setState({
+			email: '',
+			password: ''
+		})
+	};
+
 
 
 	render() {
@@ -88,15 +95,25 @@ class Login extends Component {
 						hintText="Password"
 						floatingLabelText="Password"
 						style={textFieldStyle}
+
 						value={this.state.password}
 						onChange={this.handleInputChange}
-						errorText={this.state.password}
-					/>
+						errorText={this.state.password}>
+						<input type="password"/>
+					</TextField>
+
 					<RaisedButton
-						label="Submit"
+						label="Login"
 						primary={true}
 						style={textFieldStyle}
 						onClick={this.handleSubmit}
+					>
+					</RaisedButton>
+					<RaisedButton
+						label="Cancel"
+						primary={false}
+						style={textFieldStyle}
+						onClick={this.handleCancel}
 					>
 					</RaisedButton>
 

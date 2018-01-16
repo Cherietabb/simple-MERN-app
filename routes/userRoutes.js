@@ -31,7 +31,8 @@ router.post('/register', function(req, res, next) {
 	User.create(req.body)
 		.then((user) => {
 			res.send(user)
-			res.redirect('/')
+			res.render('/register', {user: user});
+			res.redirect('/');
 		}).catch(next)
 });
 

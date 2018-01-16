@@ -29,12 +29,12 @@ class SideDrawer extends Component {
 				<FlatButton
 					label="register"
 					style={buttonStyle}
-				  href='/users/register'
+				  href='/register'
 				/>
 				<FlatButton
 					label="login"
 					style={buttonStyle}
-				  href='/users/login'
+				  href='/login'
 				/>
 			</div>
 		);
