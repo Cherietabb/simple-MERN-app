@@ -1,5 +1,3 @@
-// add express-messages module
-
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -7,6 +5,43 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('cookie-session');
 const path = require('path');
+const multer = require('multer');
+const pug = require('pug');
+const Profile = require('./models/profile');
+
+// Set storage engine
+const storage = multer.diskStorage({
+	destination: './public/uploads',
+	filename: ((req, file, cb) => {
+		cb(null, file.fieldName + '-' + Date.now() + path.extname(file.originalname))
+	})
+});
+
+//Init
+const upload = multer({
+	storage: storage,
+	limits: {fileSize: 1000000},
+	fileFilter: (req, file, cb) => {
+		checkFileType(file, cb);
+	}
+});
+
+// Check File Type
+checkFileType = (file, cb) => {
+	// Allowed extensions
+	const fileTypes = /jpeg|jpg|png|gif/;
+	// Check ext
+	const extname = fileTypes.test(path.extname(file.originalname).toLocaleLowerCase());
+	// Check mimetype
+	const mimeType = fileTypes.test(file.mimetype);
+
+	if (mimeType && extname) {
+		return cb(null, true)
+	} else {
+		return cb('Error: images only')
+	}
+};
+
 
 const keys = require('./config/keys');
 

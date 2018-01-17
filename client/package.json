@@ -21,5 +21,8 @@
     "/profiles": {
       "target": "http://localhost:4000"
     }
+  },
+  "devDependencies": {
+    "prop-types": "latest"
   }
 }

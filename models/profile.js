@@ -8,9 +8,9 @@ const ProfileSchema = new Schema({
 	},
 	description: {
 		type: String
-	}
+	},
 	// store profile image
-
+	img: { data: Buffer, contentType: String }
 });
 
 const Profile = mongoose.model('Profile', ProfileSchema);

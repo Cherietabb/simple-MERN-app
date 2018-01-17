@@ -5,23 +5,25 @@ import axios from 'axios';
 
 const styles = {
 	root: {
-		marginTop: '30px',
-		paddingTop: '10px',
+		marginTop: '50px',
 		display: 'flex',
 		flexWrap: 'wrap',
-		justifyContent: 'center',
+		justifyContent: 'space-around',
 	},
 	gridList: {
-		marginTop: '30px',
-		paddingTop: '20px',
 		display: 'flex',
 		flexDirection: 'row',
-		position: 'static',
 		width: 500,
 		height: 450,
 		overflowY: 'auto',
-		justifyContent: 'space-around'
+		justifyContent: 'center'
 	},
+	gridTile: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		top: 0,
+		display: 'flex',
+	}
 };
 
 class Profiles extends Component {
@@ -48,6 +50,7 @@ componentDidMount() {
 		return profiles.map((profile) => {
 			return (
 				<GridTile
+					style={styles.gridTile}
 					key={profile.name}
 					title={profile.name}
 					subtitle={<span>{profile.description}</span>}>
@@ -60,7 +63,6 @@ componentDidMount() {
 		return (
 			<div style={styles.root}>
 				<GridList
-					cellHeight={180}
 					cols={3}
 					style={styles.gridList}
 				>

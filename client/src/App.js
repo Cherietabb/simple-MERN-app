@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {blueGrey800, pink300, grey400, grey900, white, cyan700} from 'material-ui/styles/colors';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import BottomNavigation from './components/BottomNavigation';
+import Navigation from './components/BottomNavigation';
 import Profiles from './components/Profiles';
 import AddProfile from './components/add_profile';
 import SideDrawer from './components/SideDrawer';
@@ -27,7 +27,7 @@ class App extends Component {
 								<Route path="/register" component={Register} />
 								<Route path="/login" component={Login} />
 						</Switch>
-						<BottomNavigation />
+						<Navigation />
 					</div>
 				</BrowserRouter>
 			</MuiThemeProvider>

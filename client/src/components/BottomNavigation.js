@@ -1,24 +1,28 @@
 import React from 'react';
+import BottomNavigation from 'material-ui/BottomNavigation';
 
 
 const contentStyle = {
+	root: {
+		width: 200
+	},
 	display: 'flex',
 	padding: '50px',
 	justifyContent: 'center'
 };
 
-const BottomNavigation = () => {
+const Navigation = () => {
 	return (
-		<div style={contentStyle} className="container" id="bottom-content">
+		<BottomNavigation style={contentStyle}>
 			<div className="text-center center-block">
-				<div className="navbar fixed-bottom navbar-light bg-faded">
+				<div>
 				</div>
 			</div>
 			<p>
 				<small>Created 2017 by Cherie Tabb</small>
 			</p>
-		</div>
+		</BottomNavigation>
 	)
 };
 
-export default BottomNavigation;
+export default Navigation;

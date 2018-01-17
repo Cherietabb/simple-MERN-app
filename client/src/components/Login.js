@@ -68,6 +68,7 @@ class Login extends Component {
 	};
 
 	handleCancel = (e) => {
+		e.preventDefault();
 		this.setState({
 			email: '',
 			password: ''
@@ -109,6 +110,7 @@ class Login extends Component {
 						onClick={this.handleSubmit}
 					>
 					</RaisedButton>
+					<br />
 					<RaisedButton
 						label="Cancel"
 						primary={false}

@@ -35,7 +35,8 @@ class AddProfile extends Component {
 
 		this.state = {
 			name: '',
-			description: ''
+			description: '',
+			image: ''
 		}
 	}
 
@@ -65,15 +66,16 @@ class AddProfile extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault();
 		const err = this.validate();
-		const {name, description} = this.state;
+		const {name, description, image} = this.state;
 		if (!err) {
 			axios.post('http://localhost:4000/profiles/add_profile',
-				{name, description})
+				{name, description, image})
 				.then((response) => {
 					this.setState({
 						serverMessage: response,
 						name: '',
-						description: ''
+						description: '',
+						image: ''
 					})
 				})
 				.catch((error) => {
@@ -105,11 +107,24 @@ class AddProfile extends Component {
 						<TextField
 							name="description"
 							hintText="Description"
-							floatingLabelText="description"
+							floatingLabelText="Description"
 							style={textFieldStyle}
 							value={this.state.description}
 							onChange={this.handleInputChange}
 						/>
+						<TextField
+							name="image"
+							hintText="Upload Image"
+							floatingLabelText="Upload Image"
+							style={textFieldStyle}
+							value={this.state.image}
+							onChange={this.handleInputChange}>
+							<input
+								type="file"
+							  encType="multipart/form-data"
+							/>
+						</TextField>
+
 						<RaisedButton
 							label="Submit"
 							primary={true}
