@@ -1,6 +1,4 @@
 const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('cookie-session');
@@ -61,12 +59,6 @@ db.on('error', (err) => {
 	console.log(err);
 });
 
-app.set('views', path.join(__dirname, '../client'));
-app.use(express.static(path.join(__dirname, '../client')));
-app.use(cors());
-app.use(bodyParser.json());
-
-
 app.use(session({
 	secret: keys.cookieSession,
 	resave: false,
@@ -86,7 +78,7 @@ app.use(passport.session());
 app.use('/users', require('./routes/userRoutes'));
 app.use('/profiles', require('./routes/profileRoutes'));
 
-const port = process.env.port || 4000;
+const port = process.env.PORT || 4000;
 
 app.listen(port, () => {
 	console.log(`App currently running on port ${port}...`)
