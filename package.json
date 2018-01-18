@@ -8,8 +8,8 @@
     "npm": "5.5.1"
   },
   "scripts": {
-    "server": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "server": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
