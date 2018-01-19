@@ -46,7 +46,7 @@ router.get('/', (req, res, next) => {
 });
 
 
-router.post('/add_profile', upload.single(), (req, res, next) => {
+router.post('/add_profile', (req, res, next) => {
 
 	Profile.create(req.body)
 		.then((profile) => {
