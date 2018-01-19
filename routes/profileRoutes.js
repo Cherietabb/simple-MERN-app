@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Profile = require('../models/profile');
 const multer = require('multer');
+const fs = require('fs');
 
 // Set storage engine
 const storage = multer.diskStorage({
-	destination: './public/uploads/',
+	destination: '/uploads',
 	filename: function (req, file, cb) {
 		cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
 	}
@@ -17,10 +18,10 @@ const upload = multer({
 	fileFilter: (req, file, cb) => {
 		checkFileType(file, cb);
 	}
-}).single('file');
+}).single('image');
 
 // Check File Type
-function checkFileType(file, cb){
+function checkFileType(file, cb) {
 	// Allowed ext
 	const filetypes = /jpeg|jpg|png|gif/;
 	// Check ext
@@ -28,13 +29,12 @@ function checkFileType(file, cb){
 	// Check mime
 	const mimetype = filetypes.test(file.mimetype);
 
-	if(mimetype && extname){
-		return cb(null,true);
+	if (mimetype && extname) {
+		return cb(null, true);
 	} else {
 		cb('Error: Images Only!');
 	}
 }
-
 
 
 router.get('/', (req, res, next) => {
@@ -46,37 +46,65 @@ router.get('/', (req, res, next) => {
 });
 
 
-router.post('/add_profile', (req, res, next) => {
-	Profile.create(req.body)
-		.then((profile) => {
-			res.send(profile);
-			res.render('/add_profile', {profile: profile})
-				.catch(next);
-		});
-});
-
 /*
-router.post('/uploads', (req, res) => {
+ router.post('/add_profile', (req, res, next) => {
+ Profile.create(req.body)
+ .then((profile) => {
+ res.send(profile);
+ res.render('/add_profile', {profile: profile})
+ .catch(next);
+ });
+ });
+ */
+
+router.post('/add_profile', (req, res, next) => {
 	upload(req, res, (err) => {
-		if(err){
-			res.render('index', {
+		if (err) {
+			res.render('/add_profile', {
 				msg: err
 			});
 		} else {
-			if(req.file === undefined){
+			if (req.file === undefined) {
 				res.render('index', {
 					msg: 'Error: No File Selected!'
 				});
 			} else {
-				res.render('index', {
+				res.render('/add_profile', {
 					msg: 'File Uploaded!',
 					file: `uploads/${req.file.filename}`
 				});
 			}
 		}
 	});
+
+	const newProfile = new Profile({
+		name: req.body.name,
+		description: req.body.description,
+		img: req.file
+	});
+
+	newProfile.save((err, req) => {
+			if (err) {
+				res.status(401).json({
+					message: err
+				});
+				console.log(err);
+			}
+		})
+		.then((newProfile) => {
+			res.send(newProfile);
+			res.render('/add_profile', {newProfile: newProfile});
+		})
+
+	/*
+	 const newProfile = new Profile({
+	 name: req.body.name,
+	 description: req.body.description,
+	 image: req.file
+	 });
+	 */
+
 });
-*/
 
 
 router.put('/edit/:id', (req, res, next) => {

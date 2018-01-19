@@ -78,9 +78,11 @@ class AddProfile extends Component {
 						image: ''
 					})
 				})
+/*
 				.catch((error) => {
 				console.log(error)
 			});
+*/
 		}
 	};
 

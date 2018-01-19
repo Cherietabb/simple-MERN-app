@@ -13,16 +13,15 @@ const styles = {
 	gridList: {
 		display: 'flex',
 		flexDirection: 'row',
-		width: 500,
-		height: 450,
+		width: '80%',
 		overflowY: 'auto',
 		justifyContent: 'center'
 	},
 	gridTile: {
-		flexDirection: 'row',
+		display: 'flex',
+		flexDirection: 'column',
 		justifyContent: 'center',
 		top: 0,
-		display: 'flex',
 	}
 };
 
@@ -63,7 +62,7 @@ componentDidMount() {
 		return (
 			<div style={styles.root}>
 				<GridList
-					cols={3}
+					cols={5}
 					style={styles.gridList}
 				>
 					<Subheader>Profiles</Subheader>
