@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import {red300, blue400} from 'material-ui/styles/colors';
+import {red300} from 'material-ui/styles/colors';
 
 
 const contentStyle = {
@@ -22,12 +21,6 @@ const textFieldStyle = {
 		color: red300
 	},
 };
-
-const buttonStyle = {
-	backgroundColor: blue400,
-	margin: '3px'
-};
-
 
 class Login extends Component {
 	constructor(props) {
