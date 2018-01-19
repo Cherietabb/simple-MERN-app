@@ -10,8 +10,9 @@
   "scripts": {
     "start": "node index.js",
     "server": "node index.js",
+    "test": "nodemon index.js",
     "client": "npm run start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run test\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
