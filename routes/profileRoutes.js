@@ -41,7 +41,6 @@ router.get('/', (req, res, next) => {
 	Profile.find({})
 		.then((profile) => {
 			res.send(profile);
-			res.render('/')
 		}).catch(next);
 });
 
@@ -108,7 +107,6 @@ router.put('/edit/:id', (req, res, next) => {
 			Profile.findOne({_id: req.params.id})
 				.then((profile) => {
 					res.send(profile)
-					// res.redirect('/')
 				}).catch(next);
 		});
 });
@@ -119,7 +117,6 @@ router.delete('/:id', (req, res, next) => {
 			Profile.findOne({_id: req.params.id})
 				.then((profile) => {
 					res.send(profile)
-					//res.redirect('/')
 				}).catch(next);
 		});
 });
