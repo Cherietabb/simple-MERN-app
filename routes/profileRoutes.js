@@ -72,7 +72,7 @@ router.post('/add_profile', (req, res, next) => {
 				msg: 'Error: Problem creating profile'
 			});
 		} else {
-			if (req.file === undefined) {
+			if (req.body.image === undefined) {
 				res.send({
 					msg: 'Error: No File Selected!'
 				});
