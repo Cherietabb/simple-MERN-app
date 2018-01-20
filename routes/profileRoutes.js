@@ -6,7 +6,7 @@ const fs = require('fs');
 
 // Set storage engine
 const storage = multer.diskStorage({
-	destination: './public/uploads',
+	destination: '../public/uploads',
 	filename: function (req, file, cb) {
 		cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
 	}
@@ -59,17 +59,25 @@ router.get('/', (req, res, next) => {
 
 router.post('/add_profile', (req, res, next) => {
 	upload(req, res, (err) => {
+		Profile.create(req.body)
+			.then(function() {
+				res.send({msg: 'Profile successfully created'});
+				// res.render('/add_profile', {profile: profile})
+
+		console.log(req.body);
+		console.log(req.file);
+			});
 		if (err) {
-			res.render('/add_profile', {
-				msg: err
+			res.send({
+				msg: 'Error: Problem creating profile'
 			});
 		} else {
 			if (req.file === undefined) {
-				res.render('index', {
+				res.send({
 					msg: 'Error: No File Selected!'
 				});
 			} else {
-				res.render('/add_profile', {
+				res.send({
 					msg: 'File Uploaded!',
 					file: `uploads/${req.file.filename}`
 				});
@@ -77,35 +85,22 @@ router.post('/add_profile', (req, res, next) => {
 		}
 	});
 
-	const newProfile = new Profile({
-		name: req.body.name,
-		description: req.body.description,
-		img: req.file
-	});
-
-	newProfile.save((err, req) => {
-			if (err) {
-				res.status(401).json({
-					message: err
-				});
-				console.log(err);
-			}
-		})
-		.then((newProfile) => {
-			res.send(newProfile);
-			res.render('/add_profile', {newProfile: newProfile});
-		})
-
 	/*
-	 const newProfile = new Profile({
-	 name: req.body.name,
-	 description: req.body.description,
-	 image: req.file
-	 });
+	 const profile = new Profile();
+	 profile.name = req.body.name;
+	 profile.description = req.body.description;
+	 profile.image = req.file;
+	 console.log(profile);
+
+	 profile.save((err) => {
+	 if (err) throw err;
+	 res.send({msg: 'Profile successfully added!'});
+	 res.send(profile);
+	 res.render('/add_profile', {profile: profile});
+	 })
+	 .catch(next)
 	 */
-
 });
-
 
 router.put('/edit/:id', (req, res, next) => {
 	Profile.findByIdAndUpdate({_id: req.params.id}, req.body)
