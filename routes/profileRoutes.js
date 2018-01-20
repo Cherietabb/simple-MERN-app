@@ -44,34 +44,22 @@ router.get('/', (req, res, next) => {
 		}).catch(next);
 });
 
-
-/*
- router.post('/add_profile', (req, res, next) => {
- Profile.create(req.body)
- .then((profile) => {
- res.send(profile);
- res.render('/add_profile', {profile: profile})
- .catch(next);
- });
- });
- */
-
 router.post('/add_profile', (req, res, next) => {
 	upload(req, res, (err) => {
 		Profile.create(req.body)
-			.then(function() {
+			.then(function () {
 				res.send({msg: 'Profile successfully created'});
 				// res.render('/add_profile', {profile: profile})
 
-		console.log(req.body);
-		console.log(req.file);
+				console.log(req.body);
+				console.log(req.file);
 			});
 		if (err) {
 			res.send({
 				msg: 'Error: Problem creating profile'
 			});
 		} else {
-			if (req.body.image === undefined) {
+			if (req.file === undefined) {
 				res.send({
 					msg: 'Error: No File Selected!'
 				});
@@ -83,7 +71,7 @@ router.post('/add_profile', (req, res, next) => {
 			}
 		}
 	});
-
+});
 	/*
 	 const profile = new Profile();
 	 profile.name = req.body.name;
@@ -99,7 +87,7 @@ router.post('/add_profile', (req, res, next) => {
 	 })
 	 .catch(next)
 	 */
-});
+
 
 router.put('/edit/:id', (req, res, next) => {
 	Profile.findByIdAndUpdate({_id: req.params.id}, req.body)
@@ -107,6 +95,7 @@ router.put('/edit/:id', (req, res, next) => {
 			Profile.findOne({_id: req.params.id})
 				.then((profile) => {
 					res.send(profile)
+					// res.redirect('/')
 				}).catch(next);
 		});
 });
@@ -117,6 +106,7 @@ router.delete('/:id', (req, res, next) => {
 			Profile.findOne({_id: req.params.id})
 				.then((profile) => {
 					res.send(profile)
+					//res.redirect('/')
 				}).catch(next);
 		});
 });
