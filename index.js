@@ -10,7 +10,7 @@ const keys = require('./config/keys');
 
 const app = express();
 
-mongoose.connect(keys.mongodbURI, {useMongoClient: true});
+mongoose.connect(keys.mongoURI, {useMongoClient: true});
 mongoose.Promise = global.Promise;
 let db = mongoose.connection;
 
