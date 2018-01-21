@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
 	storage: storage,
-	limits: {fileSize: 10000000},
+	limits: {fileSize: 1000000},
 	fileFilter: (req, file, cb) => {
 		checkFileType(file, cb);
 	}
@@ -36,7 +36,6 @@ function checkFileType(file, cb) {
 	}
 }
 
-
 router.get('/', (req, res, next) => {
 	Profile.find({})
 		.then((profile) => {
@@ -45,49 +44,35 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/add_profile', (req, res, next) => {
+	let imageFile = req.file;
+	console.log(imageFile);
 	upload(req, res, (err) => {
-		Profile.create(req.body)
-			.then(function () {
-				res.send({msg: 'Profile successfully created'});
-				// res.render('/add_profile', {profile: profile})
-
-				console.log(req.body);
-				console.log(req.file);
-			});
+		console.log(imageFile.path);
 		if (err) {
 			res.send({
 				msg: 'Error: Problem creating profile'
 			});
 		} else {
-			if (req.file === undefined) {
+			if (imageFile === undefined) {
 				res.send({
 					msg: 'Error: No File Selected!'
 				});
 			} else {
 				res.send({
 					msg: 'File Uploaded!',
-					file: `uploads/${req.file.filename}`
-				});
+					file: `uploads/${imageFile.filename}`
+				}, console.log(imageFile.filename));
 			}
 		}
+		Profile.create(req.body)
+			.then(function () {
+				res.send({msg: 'Profile successfully created'});
+
+				console.log(req.body);
+				console.log(imageFile);
+			});
 	});
 });
-	/*
-	 const profile = new Profile();
-	 profile.name = req.body.name;
-	 profile.description = req.body.description;
-	 profile.image = req.file;
-	 console.log(profile);
-
-	 profile.save((err) => {
-	 if (err) throw err;
-	 res.send({msg: 'Profile successfully added!'});
-	 res.send(profile);
-	 res.render('/add_profile', {profile: profile});
-	 })
-	 .catch(next)
-	 */
-
 
 router.put('/edit/:id', (req, res, next) => {
 	Profile.findByIdAndUpdate({_id: req.params.id}, req.body)

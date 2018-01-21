@@ -43,8 +43,15 @@ class AddProfile extends Component {
 	handleInputChange = e => {
 		this.setState({
 			[e.target.name]: e.target.value
-		});
+		}, console.log(e.target.value));
 	};
+
+	handleUploadFile = (event) => {
+		console.log("event", event.target);
+		this.setState({
+			image1: event.target.files[0],
+		});
+	}
 
 	validate = () => {
 		let isError = false;
@@ -67,6 +74,7 @@ class AddProfile extends Component {
 		e.preventDefault();
 		const err = this.validate();
 		const {name, description, image} = this.state;
+		console.log(this.state);
 		if (!err) {
 			axios.post('http://localhost:4000/profiles/add_profile',
 				{name, description, image})
@@ -116,11 +124,9 @@ class AddProfile extends Component {
 						/>
 						<TextField
 							name="image"
-							hintText="Upload Image"
-							floatingLabelText="Upload Image"
 							style={textFieldStyle}
 							value={this.state.image}
-							onChange={this.handleInputChange}>
+							onChange={this.handleUploadFile}>
 							<input
 								type="file"
 							  encType="multipart/form-data"
