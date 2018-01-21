@@ -25,6 +25,7 @@ db.on('error', (err) => {
 });
 
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "client", "build")))
 
 app.use(session({
 	secret: keys.cookieSession,
@@ -46,6 +47,10 @@ app.use('/users', require('./routes/userRoutes'));
 app.use('/profiles', require('./routes/profileRoutes'));
 
 const port = process.env.PORT || 4000;
+
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 app.listen(port, () => {
 	console.log(`App currently running on port ${port}...`)
