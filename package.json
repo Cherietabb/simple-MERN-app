@@ -37,5 +37,11 @@
   "devDependencies": {
     "concurrently": "^3.5.1",
     "nodemon": "^1.14.10"
+  },
+  "https_only": "true",
+  "headers": {
+    "/**": {
+      "Strict-Transport-Security": "max-age=7776000"
+    }
   }
 }
