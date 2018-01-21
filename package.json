@@ -9,11 +9,16 @@
   },
   "scripts": {
     "start": "node index.js",
+    "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
     "server": "node index.js",
     "test": "nodemon index.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run test\" \"npm run client\""
   },
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
