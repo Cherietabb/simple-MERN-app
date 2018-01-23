@@ -50,6 +50,7 @@ class Profiles extends Component {
 
 	renderList() {
 		let profiles = this.state.profiles;
+		console.log(profiles);
 		return profiles.map((profile) => {
 			return (
 				<Card
@@ -59,8 +60,7 @@ class Profiles extends Component {
 					<CardMedia
 						style={styles.media}
 					>
-						{/*<img src={moraineLake} alt="Moraine Lake"/>*/}
-						<img src={profile.image} alt='' />
+						<img src={profile.image} alt="" />
 					</CardMedia>
 					<div style={styles.cardText}>
 						<span className="card-title">{profile.name}</span>

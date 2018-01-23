@@ -36,7 +36,7 @@ class AddProfile extends Component {
 		this.state = {
 			name: '',
 			description: '',
-			image: {data: '', contentType: ''}
+			image: {}
 		}
 	}
 
