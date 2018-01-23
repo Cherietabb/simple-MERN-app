@@ -20,7 +20,7 @@ class App extends Component {
 			<MuiThemeProvider muiTheme={muiTheme}>
 				<BrowserRouter>
 					<div>
-						<SideDrawer />
+						<SideDrawer/>
 						<Switch>
 								<Route exact path="/" component={Profiles}/>
 								<Route path="/add_profile" component={AddProfile} />
@@ -47,6 +47,7 @@ const muiTheme = getMuiTheme({
 	},
 	title: {
 		fontSize: 30
-	}});
+	},
+});
 
 export default App;

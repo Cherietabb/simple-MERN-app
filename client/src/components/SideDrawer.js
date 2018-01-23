@@ -28,12 +28,12 @@ class SideDrawer extends Component {
 			<div>
 				<FlatButton
 					label="register"
-					style={buttonStyle}
+					style={contentStyles.button}
 				  href='/register'
 				/>
 				<FlatButton
 					label="login"
-					style={buttonStyle}
+					style={contentStyles.button}
 				  href='/login'
 				/>
 			</div>
@@ -69,20 +69,21 @@ class SideDrawer extends Component {
 	}
 }
 
-const buttonStyle = {
-	backgroundColor: '#ffffff',
-	margin: '3px',
-	onHover: {
-		backgroundColor: '#ffffff',
-		color: '#000000',
-	}
-};
-
 const contentStyles = {
 	appBar: {
 		position: 'fixed',
 		left: 0,
 		top: 0,
+		marginBottom: '80px'
+	},
+	button: {
+		backgroundColor: '#ffffff',
+		color: '#000000',
+		margin: '3px',
+		onHover: {
+			backgroundColor: '#000000',
+			color: '#ffffff'
+		}
 	}
 };
 

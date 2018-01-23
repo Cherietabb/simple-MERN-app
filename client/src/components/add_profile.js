@@ -36,7 +36,7 @@ class AddProfile extends Component {
 		this.state = {
 			name: '',
 			description: '',
-			image: ''
+			image: {data: '', contentType: ''}
 		}
 	}
 
@@ -45,13 +45,6 @@ class AddProfile extends Component {
 			[e.target.name]: e.target.value
 		}, console.log(e.target.value));
 	};
-
-	handleUploadFile = (event) => {
-		console.log("event", event.target);
-		this.setState({
-			image1: event.target.files[0],
-		});
-	}
 
 	validate = () => {
 		let isError = false;
@@ -83,7 +76,7 @@ class AddProfile extends Component {
 						serverMessage: response,
 						name: '',
 						description: '',
-						image: ''
+						image: {}
 					})
 				})
 /*
@@ -111,7 +104,7 @@ class AddProfile extends Component {
 							floatingLabelText="Name"
 							style={textFieldStyle}
 							value={this.state.name}
-							onChange={this.handleInputChange}
+							onChange={(e) => this.handleInputChange(e)}
 							errorText={this.state.nameError}
 						/>
 						<TextField
@@ -120,15 +113,16 @@ class AddProfile extends Component {
 							floatingLabelText="Description"
 							style={textFieldStyle}
 							value={this.state.description}
-							onChange={this.handleInputChange}
+							onChange={(e) => this.handleInputChange(e)}
 						/>
 						<TextField
 							name="image"
 							style={textFieldStyle}
 							value={this.state.image}
-							onChange={this.handleUploadFile}>
+							onChange={(e) => this.handleInputChange(e)}>
 							<input
 								type="file"
+								name="image"
 							  encType="multipart/form-data"
 							/>
 						</TextField>
@@ -137,7 +131,7 @@ class AddProfile extends Component {
 							label="Submit"
 							primary={true}
 							style={textFieldStyle}
-							onClick={this.handleSubmit}
+							onClick={(e) => this.handleSubmit(e)}
 						>
 						</RaisedButton>
 					</form>

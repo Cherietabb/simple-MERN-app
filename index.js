@@ -4,11 +4,17 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const session = require('cookie-session');
 const path = require('path');
-
+// const fs = require('fs');
+const https = require('https');
+const cors = require('cors');
 
 const keys = require('./config/keys');
 
 const app = express();
+
+app.use(cors({
+	credentials: true
+}));
 
 mongoose.connect(keys.mongoURI, {useMongoClient: true});
 mongoose.Promise = global.Promise;
@@ -25,11 +31,11 @@ db.on('error', (err) => {
 });
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "client", "build")))
 
 app.use(session({
 	secret: keys.cookieSession,
 	resave: false,
+	secure: true,
 	saveUninitialized: true,
 	cookie: { secure: true },
 	maxAge: 30 * 24 * 60 * 60 * 1000
@@ -48,9 +54,14 @@ app.use('/profiles', require('./routes/profileRoutes'));
 
 const port = process.env.PORT || 4000;
 
-app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-});
+if(process.env.NODE_ENV === 'production') {
+	// Express will serve up production assets
+	app.use(express.static('client/build'));
+	// Express will serve up the index.html file if it doesn't recognize the route.
+	app.get('*', (req, res) => {
+		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+	});
+}
 
 app.listen(port, () => {
 	console.log(`App currently running on port ${port}...`)

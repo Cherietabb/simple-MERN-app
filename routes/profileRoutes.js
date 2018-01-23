@@ -2,39 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Profile = require('../models/profile');
 const multer = require('multer');
+const path = require('path');
 const fs = require('fs');
 
-// Set storage engine
-const storage = multer.diskStorage({
-	destination: './tmp',
-	filename: function (req, file, cb) {
-		cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-	}
-});
+const upload = multer().single('image');
 
-const upload = multer({
-	storage: storage,
-	limits: {fileSize: 1000000},
-	fileFilter: (req, file, cb) => {
-		checkFileType(file, cb);
-	}
-}).single('image');
-
-// Check File Type
-function checkFileType(file, cb) {
-	// Allowed ext
-	const filetypes = /jpeg|jpg|png|gif/;
-	// Check ext
-	const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-	// Check mime
-	const mimetype = filetypes.test(file.mimetype);
-
-	if (mimetype && extname) {
-		return cb(null, true);
-	} else {
-		cb('Error: Images Only!');
-	}
-}
+const allowed_images = /^image\/(png|jpe?g|gif)/i;
 
 router.get('/', (req, res, next) => {
 	Profile.find({})
@@ -43,35 +16,20 @@ router.get('/', (req, res, next) => {
 		}).catch(next);
 });
 
-router.post('/add_profile', (req, res, next) => {
-	let imageFile = req.file;
-	console.log(imageFile);
-	upload(req, res, (err) => {
-		console.log(imageFile.path);
-		if (err) {
-			res.send({
-				msg: 'Error: Problem creating profile'
-			});
-		} else {
-			if (imageFile === undefined) {
-				res.send({
-					msg: 'Error: No File Selected!'
-				});
-			} else {
-				res.send({
-					msg: 'File Uploaded!',
-					file: `uploads/${imageFile.filename}`
-				}, console.log(imageFile.filename));
-			}
-		}
-		Profile.create(req.body)
-			.then(function () {
-				res.send({msg: 'Profile successfully created'});
-
-				console.log(req.body);
-				console.log(imageFile);
-			});
-	});
+router.post("/add_profile", upload, (req, res) => {
+	const profile = req.body;
+	console.log(req.body);
+	if (req.file && allowed_images.exec(req.file.mimetype)) {
+		profile.image = {
+			data: req.file.buffer,
+			filename: req.file + '-' + Date.now() + req.file.originalname,
+			contentType: req.file.mimetype.toLowerCase()
+		};
+		console.log(req.file)
+	}
+	Profile.create(profile)
+		.then((profile) => res.send({ message: "Profile successfully created!" }))
+		.catch(err => res.status(500).send(err));
 });
 
 router.put('/edit/:id', (req, res, next) => {

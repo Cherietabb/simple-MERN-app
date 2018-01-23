@@ -1,27 +1,30 @@
 import React, {Component} from 'react';
-import {GridList, GridTile} from 'material-ui/GridList';
-import Subheader from 'material-ui/Subheader';
+import Card, {CardActions, CardText, CardMedia} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import {grey200} from 'material-ui/styles/colors';
+
 import axios from 'axios';
+// import moraineLake from '../images/moraineLake.jpg';
 
 const styles = {
-	root: {
-		marginTop: '50px',
+	container: {
+		margin: '90px',
 		display: 'flex',
+		flexDirection: 'row',
 		flexWrap: 'wrap',
 		justifyContent: 'space-around',
 	},
-	gridList: {
-		display: 'flex',
-		flexDirection: 'row',
-		width: '80%',
-		overflowY: 'auto',
-		justifyContent: 'center'
-	},
-	gridTile: {
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'center',
+	card: {
 		top: 0,
+		margin: '10px',
+		maxWidth: 345
+	},
+	media: {
+		width: '100%'
+	},
+	cardText: {
+		padding: '5px',
+		backgroundColor: grey200
 	}
 };
 
@@ -32,8 +35,9 @@ class Profiles extends Component {
 		this.state = {
 			profiles: []
 		}
-}
-componentDidMount() {
+	}
+
+	componentDidMount() {
 		axios.get('http://localhost:4000/profiles')
 			.then(response => {
 				this.setState({
@@ -42,32 +46,45 @@ componentDidMount() {
 			}).catch((error) => {
 			console.log(error)
 		})
-}
+	}
 
 	renderList() {
 		let profiles = this.state.profiles;
 		return profiles.map((profile) => {
 			return (
-				<GridTile
-					style={styles.gridTile}
+				<Card
 					key={profile.name}
-					title={profile.name}
-					subtitle={<span>{profile.description}</span>}>
-				</GridTile>
+					style={styles.card}
+				>
+					<CardMedia
+						style={styles.media}
+					>
+						{/*<img src={moraineLake} alt="Moraine Lake"/>*/}
+						<img src={profile.image} alt='' />
+					</CardMedia>
+					<div style={styles.cardText}>
+						<span className="card-title">{profile.name}</span>
+						<CardText>
+							{profile.description}
+						</CardText>
+					</div>
+					<CardActions>
+						<FlatButton label="Edit"/>
+						<FlatButton label="Delete"/>
+					</CardActions>
+				</Card>
 			)
 		});
 	}
 
 	render() {
 		return (
-			<div style={styles.root}>
-				<GridList
-					cols={5}
-					style={styles.gridList}
-				>
-					<Subheader>Profiles</Subheader>
+			<div>
+				<h2 style={{marginTop: '80px'}}>Profiles</h2>
+				<div style={styles.container}>
 					{this.renderList()}
-				</GridList>
+				</div>
+
 			</div>
 		)
 	}
