@@ -6,27 +6,6 @@ import {grey200} from 'material-ui/styles/colors';
 import axios from 'axios';
 // import moraineLake from '../images/moraineLake.jpg';
 
-const styles = {
-	container: {
-		margin: '90px',
-		display: 'flex',
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		justifyContent: 'space-around',
-	},
-	card: {
-		top: 0,
-		margin: '10px',
-		maxWidth: 345
-	},
-	media: {
-		width: '100%'
-	},
-	cardText: {
-		padding: '5px',
-		backgroundColor: grey200
-	}
-};
 
 class Profiles extends Component {
 	constructor(props) {
@@ -49,6 +28,7 @@ class Profiles extends Component {
 	}
 
 	renderList() {
+		if(!this.state.profiles) return <p>Loading...</p>;
 		let profiles = this.state.profiles;
 		console.log(profiles);
 		return profiles.map((profile) => {
@@ -89,5 +69,27 @@ class Profiles extends Component {
 		)
 	}
 }
+
+const styles = {
+	container: {
+		margin: '90px',
+		display: 'flex',
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		justifyContent: 'space-around',
+	},
+	card: {
+		top: 0,
+		margin: '10px',
+		maxWidth: 345
+	},
+	media: {
+		width: '100%'
+	},
+	cardText: {
+		padding: '5px',
+		backgroundColor: grey200
+	}
+};
 
 export default Profiles;

@@ -4,31 +4,6 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {red300, blue400} from 'material-ui/styles/colors';
 
-
-const contentStyle = {
-	marginTop: '5%',
-	position: 'relative',
-	display: 'flex',
-	flexDirection: 'row',
-	flexWrap: 'wrap',
-	width: '80%',
-	justifyContent: 'center'
-};
-
-const textFieldStyle = {
-	display: 'flex',
-	flexDirection: 'column',
-	errorStyle: {
-		color: red300
-	},
-};
-
-const buttonStyle = {
-	backgroundColor: blue400,
-	margin: '3px'
-};
-
-
 class Register extends Component {
 	constructor(props) {
 		super(props);
@@ -42,10 +17,22 @@ class Register extends Component {
 	}
 
 	handleInputChange = e => {
+		e.preventDefault();
 		this.setState({
 			[e.target.name]: e.target.value
 		});
 	};
+
+	handleCancel = (e) => {
+		e.preventDefault();
+		this.setState({
+			name: '',
+			email: '',
+			username: '',
+			password: ''
+		})
+	};
+
 
 	validate = () => {
 		let isError = false;
@@ -110,16 +97,16 @@ class Register extends Component {
 				<RaisedButton
 					label="Back"
 					href="/"
-					style={buttonStyle}
+					style={contentStyle.raisedButton}
 				/>
 
-				<div style={contentStyle}>
+				<div style={contentStyle.root}>
 					<form>
 						<TextField
 							name="name"
 							hintText="Name"
 							floatingLabelText="Name"
-							style={textFieldStyle}
+							style={contentStyle.textField}
 							value={this.state.name}
 							onChange={this.handleInputChange}
 							errorText={this.state.nameError}
@@ -128,7 +115,7 @@ class Register extends Component {
 							name="email"
 							hintText="Email"
 							floatingLabelText="Email"
-							style={textFieldStyle}
+							style={contentStyle.textField}
 							value={this.state.email}
 							onChange={this.handleInputChange}
 							errorText={this.state.emailError}
@@ -138,7 +125,7 @@ class Register extends Component {
 							name="username"
 							hintText="Username"
 							floatingLabelText="Username"
-							style={textFieldStyle}
+							style={contentStyle.textField}
 							value={this.state.username}
 							onChange={this.handleInputChange}
 							errorText={this.state.usernameError}
@@ -148,7 +135,7 @@ class Register extends Component {
 							name="password"
 							hintText="Password"
 							floatingLabelText="Password"
-							style={textFieldStyle}
+							style={contentStyle.textField}
 
 							value={this.state.password}
 							onChange={this.handleInputChange}
@@ -159,16 +146,47 @@ class Register extends Component {
 						<RaisedButton
 							label="Submit"
 							primary={true}
-							style={textFieldStyle}
+							style={contentStyle.textField}
 							onClick={this.handleSubmit}
 						>
 						</RaisedButton>
+						<br />
+						<RaisedButton
+							label="Clear Form"
+							primary={false}
+							style={contentStyle.textField}
+							onClick={this.handleCancel}
+						>
+						</RaisedButton>
+
 					</form>
 				</div>
 			</div>
 		);
 	}
 }
+
+const contentStyle = {
+	root: {
+		display: 'flex',
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		width: '80%',
+		justifyContent: 'center'
+	},
+	textField: {
+		display: 'flex',
+		flexDirection: 'column',
+	},
+	errorStyle: {
+		color: red300
+	},
+	raisedButton: {
+		width: '60px',
+		backgroundColor: blue400,
+		marginTop: '90px'
+	}
+};
 
 export default Register;
 

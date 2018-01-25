@@ -77,14 +77,13 @@ const contentStyles = {
 		marginBottom: '80px'
 	},
 	button: {
-		backgroundColor: '#ffffff',
-		color: '#000000',
+		backgroundColor: '#ECEFF1',
 		margin: '3px',
-		onHover: {
-			backgroundColor: '#000000',
-			color: '#ffffff'
-		}
-	}
+	},
+	ripple: {
+		background: '#ECEFF1',
+		opacity: !('#ECEFF1' || '#78909C') ? 0.1 : 0.16,
+	},
 };
 
 export default SideDrawer;

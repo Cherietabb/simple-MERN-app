@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import {red300} from 'material-ui/styles/colors';
+import {red300, blue400} from 'material-ui/styles/colors';
 
 
 const contentStyle = {
-	marginTop: '5%',
-	position: 'relative',
 	display: 'flex',
 	flexDirection: 'row',
 	flexWrap: 'wrap',
@@ -20,6 +18,14 @@ const textFieldStyle = {
 	errorStyle: {
 		color: red300
 	},
+};
+
+const buttonStyle = {
+	display: 'flex',
+	flexDirection: 'right',
+	width: '60px',
+	backgroundColor: blue400,
+	marginTop: '90px'
 };
 
 class Login extends Component {
@@ -69,50 +75,56 @@ class Login extends Component {
 	};
 
 
-
 	render() {
-		return(
-			<div style={contentStyle}>
-				<form>
-					<TextField
-						name="email"
-						hintText="Email"
-						floatingLabelText="Email"
-						style={textFieldStyle}
-						value={this.state.email}
-						onChange={this.handleInputChange}
-						errorText={this.state.emailError}
-					/>
+		return (
+			<div>
+				<RaisedButton
+					label="Back"
+					href="/"
+					style={buttonStyle}
+				/>
 
-					<TextField
-						name="password"
-						hintText="Password"
-						floatingLabelText="Password"
-						style={textFieldStyle}
+				<div style={contentStyle}>
+					<form>
+						<TextField
+							name="email"
+							hintText="Email"
+							floatingLabelText="Email"
+							style={textFieldStyle}
+							value={this.state.email}
+							onChange={this.handleInputChange}
+							errorText={this.state.emailError}
+						/>
 
-						value={this.state.password}
-						onChange={this.handleInputChange}
-						errorText={this.state.password}>
-						<input type="password"/>
-					</TextField>
+						<TextField
+							name="password"
+							hintText="Password"
+							floatingLabelText="Password"
+							style={textFieldStyle}
 
-					<RaisedButton
-						label="Login"
-						primary={true}
-						style={textFieldStyle}
-						onClick={this.handleSubmit}
-					>
-					</RaisedButton>
-					<br />
-					<RaisedButton
-						label="Cancel"
-						primary={false}
-						style={textFieldStyle}
-						onClick={this.handleCancel}
-					>
-					</RaisedButton>
+							value={this.state.password}
+							onChange={this.handleInputChange}
+							errorText={this.state.password}>
+							<input type="password"/>
+						</TextField>
 
-				</form>
+						<RaisedButton
+							label="Login"
+							primary={true}
+							style={textFieldStyle}
+							onClick={this.handleSubmit}
+						>
+						</RaisedButton>
+						<br />
+						<RaisedButton
+							label="Clear Form"
+							primary={false}
+							style={textFieldStyle}
+							onClick={this.handleCancel}
+						>
+						</RaisedButton>
+					</form>
+				</div>
 			</div>
 		);
 	}
