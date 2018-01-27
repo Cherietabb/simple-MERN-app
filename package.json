@@ -35,11 +35,11 @@
     "multer-s3": "^2.7.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "cors": "^2.8.4"
   },
   "devDependencies": {
     "concurrently": "^3.5.1",
-    "cors": "^2.8.4",
     "nodemon": "^1.14.10"
   }
 }
