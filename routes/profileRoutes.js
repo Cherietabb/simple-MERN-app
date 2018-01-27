@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Profile = require('../models/profile');
-const keys = require('../config/dev');
+const keys = require('../config/keys');
 const multer = require('multer');
 const path = require('path');
 const multers3 = require('multer-s3');
@@ -15,7 +15,9 @@ aws.config.update({
 	region: 'us-east-1'
 });
 
-s3 = new aws.S3();
+s3 = new aws.S3({
+	signatureVersion: 'v4',
+});
 
 const upload = multer({
 	storage: multers3({
