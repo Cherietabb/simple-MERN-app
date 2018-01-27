@@ -4,7 +4,6 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const session = require('cookie-session');
 const path = require('path');
-// const fs = require('fs');
 const https = require('https');
 const cors = require('cors');
 
