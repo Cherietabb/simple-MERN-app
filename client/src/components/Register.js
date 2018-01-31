@@ -12,7 +12,7 @@ class Register extends Component {
 			name: '',
 			email: '',
 			username: '',
-			password: ''
+			password: null
 		}
 	}
 
@@ -29,7 +29,7 @@ class Register extends Component {
 			name: '',
 			email: '',
 			username: '',
-			password: ''
+			password: null
 		})
 	};
 
@@ -73,16 +73,18 @@ class Register extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault();
 		const err = this.validate();
-		const {name, email, username, password} = this.state;
+		const payload = {...this.state};
+		console.log('Payload:', payload);
 		if (!err) {
-			axios.post('http://localhost:4000/users/register', {name, email, username, password})
+			axios.post('http://localhost:4000/users/register', payload)
+				console.log('Is code getting here?')
 				.then((response) => {
 					this.setState({
 						serverMessage: response,
 						name: '',
 						email: '',
 						username: '',
-						password: ''
+						password: null
 					})
 				})
 				.catch((error) => {

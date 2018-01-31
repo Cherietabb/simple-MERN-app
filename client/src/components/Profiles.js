@@ -34,7 +34,7 @@ class Profiles extends Component {
 		return profiles.map((profile) => {
 			return (
 				<Card
-					key={profile.name}
+					key={profile._id}
 					style={styles.card}
 				>
 					<CardMedia

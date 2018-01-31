@@ -2,18 +2,19 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
+// const jwt = require('jsonwebtoken');
 
 /*
-const loggedInOnly = (req, res, next) => {
-	if (req.isAuthenticated()) next();
-	else res.redirect("/login");
-};
+ const loggedInOnly = (req, res, next) => {
+ if (req.isAuthenticated()) next();
+ else res.redirect("/login");
+ };
 
-const loggedOutOnly = (req, res, next) => {
-	if (req.isUnauthenticated()) next();
-	else res.redirect("/");
-};
-*/
+ const loggedOutOnly = (req, res, next) => {
+ if (req.isUnauthenticated()) next();
+ else res.redirect("/");
+ };
+ */
 
 // Register form
 router.get('/register', function(req, res, next) {
@@ -22,35 +23,34 @@ router.get('/register', function(req, res, next) {
 	}).catch(next);
 });
 
-// router.get('*', (req, res, next) => {
-// 	res.locals.user = req.user || null;
-// 	next();
-// });
-
 router.post('/register', function(req, res, next) {
 	User.create(req.body)
 		.then((user) => {
+		passport.authenticate('local', (req, res) => {
 			res.send(user)
-			res.render('/register', {user: user});
-			res.redirect('/');
-		}).catch(next)
+		});
+			console.log(user)
+		})
+		.catch(next);
+
 });
 
-router.get('/login', (req, res, next) => {
+router.get('/login',  (req, res, next) => {
 	res.render('login', {
 		user: req.user
 	}).catch(next);
 });
 
 router.post('/login', (req, res, next) => {
-		passport.authenticate('local', {
-			successRedirect: '/',
-			failureRedirect: '/login',
-			failureFlash: true
-		})(req, res, next);
-	});
+	passport.authenticate('local', {
+		successRedirect: '/',
+		failureRedirect: '/login',
+		failureFlash: true
+	})(req, res, next);
+});
 
-router.get('/logout', (req, res) =>{
+router.get('/logout', (req, res) => {
+	console.log('Logging out');
 	req.logout();
 	res.redirect('/');
 });
