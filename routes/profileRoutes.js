@@ -9,9 +9,9 @@ const aws = require('aws-sdk');
 
 
 aws.config.update({
-	secretAccessKey: keys.secretAccessKey,
-	accessKeyId: keys.accessKeyId,
-	region: 'us-east-1'
+	secretAccessKey: keys.s3SecretAccessKey,
+	accessKeyId: keys.s3AccessKeyId,
+	region: keys.s3Region
 });
 
 s3 = new aws.S3({
@@ -21,7 +21,7 @@ s3 = new aws.S3({
 const upload = multer({
 	storage: multerS3({
 		s3: s3,
-		bucket: 'simple-mern-app/images',
+		bucket: keys.s3Bucket,
 		metadata: (req, file, cb) => {
 			cb(null, {fieldname: file.fieldname})
 		},
@@ -31,7 +31,7 @@ const upload = multer({
 			const filename = `${Date.now()}-${file.originalname}`;
 			cb(null, filename)
 		}
-}),
+	}),
 	limits: {
 		filesize: 1024 * 1024 * 5
 	},
@@ -47,8 +47,25 @@ const upload = multer({
 
 }).single('image');
 
+getObjects = (req, res) => {
+	const params = {
+		Bucket: keys.s3Bucket,
 
-router.get('/', (req, res, next) => {
+	};
+	console.log('Bucket', params.Bucket);
+	console.log('Key', params.Key);
+
+	s3.getObject(params, (err, data) => {
+		if(err) {
+			return res.send({'error:': err})
+		}
+		res.send(data)
+	})
+};
+
+router.get('/', getObjects, (req, res, next) => {
+	const image = req.file;
+	console.log('Image:', image);
 	Profile.find({})
 		.then((profile) => {
 			res.send(profile);
@@ -57,27 +74,9 @@ router.get('/', (req, res, next) => {
 
 router.post("/add_profile", upload, (req, res) => {
 	const profile = req.body;
+	const image = req.file;
 	console.log(req.body);
-	console.log('File:', req.file);
-/*
-	if (req.file) {
-		profile.image = {
-			data: req.file.buffer,
-			filename: req.file.filename,
-			contentType: req.file.mimetype.toLowerCase()
-		};
-	}
-*/
-	let params = {
-		Bucket: req.file.bucket,
-		Key: req.file.key,
-		ContentType: req.file.contentType
-	};
-	console.log('Params:', params);
-
-	s3.getSignedUrl('putObject', params, function (err, url) {
-		console.log('Your generated pre-signed URL is', url);
-	});
+	console.log('File:', image);
 
 	Profile.create(profile)
 		.then((profile) => res.send({message: "Profile successfully created!"}))
@@ -99,7 +98,8 @@ router.delete('/:id', (req, res, next) => {
 		.then(() => {
 			Profile.findOne({_id: req.params.id})
 				.then((profile) => {
-					res.send(profile)
+					res.send(profile);
+					res.send({message: 'Profile deleted!'})
 				}).catch(next);
 		});
 });

@@ -62,7 +62,7 @@ class Profiles extends Component {
 			<div>
 				<h2 style={{marginTop: '80px'}}>Profiles</h2>
 				<div style={styles.container}>
-					{this.renderList()}
+					{() => this.renderList()}
 				</div>
 
 			</div>

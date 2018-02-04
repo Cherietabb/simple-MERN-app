@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import FormData from 'form-data';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {red300, blue400} from 'material-ui/styles/colors';
@@ -46,6 +47,12 @@ class AddProfile extends Component {
 		}, console.log(e.target.value));
 	};
 
+	handleImageChange = (e) => {
+		this.setState({
+			[e.target.name]: e.target.files[0],
+		}, console.log('File:', e.target.files[0]))
+	};
+
 	validate = () => {
 		let isError = false;
 		const errors = {
@@ -66,12 +73,20 @@ class AddProfile extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault();
 		const err = this.validate();
-		const {name, description, image} = this.state;
-		console.log(this.state);
+		const payload = {...this.state};
+		const body = new FormData();
+		body.append('image', payload.image.name);
+		const options = { content: body };
 		if (!err) {
-			axios.post('http://localhost:4000/profiles/add_profile',
-				{name, description, image})
+			axios.post('http://localhost:4000/profiles/add_profile', payload, options, {
+					headers: {
+						'accept': 'application/json',
+						'Accept-Language': 'en-US,en;q=0.8',
+						'Content-Type': `multipart/form-data; boundary=${body._boundary}`,
+					}
+				})
 				.then((response) => {
+					console.log('Info Sent:', body);
 					this.setState({
 						serverMessage: response,
 						name: '',
@@ -79,11 +94,9 @@ class AddProfile extends Component {
 						image: {}
 					})
 				})
-/*
 				.catch((error) => {
-				console.log(error)
-			});
-*/
+					console.log(error)
+				});
 		}
 	};
 
@@ -97,7 +110,8 @@ class AddProfile extends Component {
 				/>
 
 				<div style={contentStyle}>
-					<form>
+					<form id="myForm"
+					>
 						<TextField
 							name="name"
 							hintText="Name"
@@ -116,14 +130,16 @@ class AddProfile extends Component {
 							onChange={(e) => this.handleInputChange(e)}
 						/>
 						<TextField
-							name="image"
+							id="image"
 							style={textFieldStyle}
 							value={this.state.image}
-							onChange={(e) => this.handleInputChange(e)}>
+							onChange={(e) => this.handleImageChange(e)}
+						>
 							<input
-								type="file"
 								name="image"
-							  encType="multipart/form-data"
+								type="file"
+								encType="multipart/form-data"
+								accept="multipart/form-data"
 							/>
 						</TextField>
 
