@@ -6,29 +6,27 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {red300, blue400} from 'material-ui/styles/colors';
 
 const contentStyle = {
-	display: 'flex',
-	flexDirection: 'row',
-	flexWrap: 'wrap',
-	width: '80%',
-	justifyContent: 'center'
-};
-
-const textFieldStyle = {
-	display: 'flex',
-	flexDirection: 'column',
+	root: {
+		display: 'flex',
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	textField: {
+		display: 'block',
+	},
 	errorStyle: {
 		color: red300
 	},
+	button: {
+		display: 'flex',
+		alignItems: 'right',
+		width: '60px',
+		backgroundColor: blue400,
+		marginTop: '90px'
+	}
 };
-
-const buttonStyle = {
-	display: 'flex',
-	flexDirection: 'right',
-	width: '60px',
-	backgroundColor: blue400,
-	marginTop: '90px'
-};
-
 
 class AddProfile extends Component {
 	constructor(props) {
@@ -73,20 +71,17 @@ class AddProfile extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault();
 		const err = this.validate();
+		const data = new FormData();
 		const payload = {...this.state};
-		const body = new FormData();
-		body.append('image', payload.image.name);
-		const options = { content: body };
+		const imagedata = document.querySelector('input[type="file"]').files[0];
+		console.log('Imagedata:', imagedata);
+		data.append("image", imagedata);
+		console.log('Data:', data);
 		if (!err) {
-			axios.post('http://localhost:4000/profiles/add_profile', payload, options, {
-					headers: {
-						'accept': 'application/json',
-						'Accept-Language': 'en-US,en;q=0.8',
-						'Content-Type': `multipart/form-data; boundary=${body._boundary}`,
-					}
+			axios.post('http://localhost:4000/profiles/add_profile', payload, {
+				body: data
 				})
 				.then((response) => {
-					console.log('Info Sent:', body);
 					this.setState({
 						serverMessage: response,
 						name: '',
@@ -106,17 +101,17 @@ class AddProfile extends Component {
 				<RaisedButton
 					label="Back"
 					href="/"
-					style={buttonStyle}
+					style={contentStyle.button}
 				/>
 
-				<div style={contentStyle}>
+				<div style={contentStyle.root}>
 					<form id="myForm"
 					>
 						<TextField
 							name="name"
 							hintText="Name"
 							floatingLabelText="Name"
-							style={textFieldStyle}
+							style={contentStyle.textField}
 							value={this.state.name}
 							onChange={(e) => this.handleInputChange(e)}
 							errorText={this.state.nameError}
@@ -125,28 +120,30 @@ class AddProfile extends Component {
 							name="description"
 							hintText="Description"
 							floatingLabelText="Description"
-							style={textFieldStyle}
+							style={contentStyle.textField}
 							value={this.state.description}
 							onChange={(e) => this.handleInputChange(e)}
 						/>
 						<TextField
 							id="image"
-							style={textFieldStyle}
 							value={this.state.image}
-							onChange={(e) => this.handleImageChange(e)}
+							style={contentStyle.textField}
 						>
 							<input
 								name="image"
 								type="file"
 								encType="multipart/form-data"
 								accept="multipart/form-data"
+								onChange={(e) => this.handleImageChange(e)}
+
 							/>
 						</TextField>
 
 						<RaisedButton
 							label="Submit"
+							value="Submit"
 							primary={true}
-							style={textFieldStyle}
+							style={contentStyle.textField}
 							onClick={(e) => this.handleSubmit(e)}
 						>
 						</RaisedButton>

@@ -8,7 +8,9 @@ const contentStyle = {
 	},
 	display: 'flex',
 	padding: '50px',
-	justifyContent: 'center'
+	alignItems: 'center',
+	flexDirection: 'column',
+	justifyContent: 'space-between'
 };
 
 const Navigation = () => {

@@ -40,7 +40,7 @@ class SideDrawer extends Component {
 		);
 
 		return (
-			<div>
+			<div style={contentStyles.root}>
 				<AppBar
 					style={contentStyles.appBar}
 					onLeftIconButtonClick={this.handleToggle}
@@ -74,15 +74,15 @@ const contentStyles = {
 		position: 'fixed',
 		left: 0,
 		top: 0,
-		marginBottom: '80px'
+		// marginBottom: '80px'
 	},
 	button: {
 		backgroundColor: '#ECEFF1',
 		margin: '3px',
-	},
-	ripple: {
-		background: '#ECEFF1',
-		opacity: !('#ECEFF1' || '#78909C') ? 0.1 : 0.16,
+		ripple: {
+			background: '#ECEFF1',
+			opacity: !('#ECEFF1' || '#78909C') ? 0.1 : 0.16,
+		},
 	},
 };
 

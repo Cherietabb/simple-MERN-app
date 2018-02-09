@@ -4,7 +4,6 @@ import FlatButton from 'material-ui/FlatButton';
 import {grey200} from 'material-ui/styles/colors';
 
 import axios from 'axios';
-// import moraineLake from '../images/moraineLake.jpg';
 
 
 class Profiles extends Component {
@@ -17,30 +16,35 @@ class Profiles extends Component {
 	}
 
 	componentDidMount() {
+		const _this = this;
 		axios.get('http://localhost:4000/profiles')
 			.then(response => {
-				this.setState({
+				console.log(`Response ${response}`);
+				_this.setState({
 					profiles: response.data
 				})
-			}).catch((error) => {
-			console.log(error)
-		})
+			})
+			.catch((error) => {
+				console.log(error)
+			})
 	}
 
 	renderList() {
-		if(!this.state.profiles) return <p>Loading...</p>;
-		let profiles = this.state.profiles;
-		console.log(profiles);
+		const {profiles} = this.state;
+		if (!profiles) return <p>Loading...</p>;
+
+		console.log('Profiles:', profiles);
 		return profiles.map((profile) => {
 			return (
 				<Card
+					data={profiles}
 					key={profile._id}
 					style={styles.card}
 				>
 					<CardMedia
 						style={styles.media}
 					>
-						<img src={profile.image} alt="" />
+						<img src={profile.image} alt=""/>
 					</CardMedia>
 					<div style={styles.cardText}>
 						<span className="card-title">{profile.name}</span>
@@ -62,7 +66,7 @@ class Profiles extends Component {
 			<div>
 				<h2 style={{marginTop: '80px'}}>Profiles</h2>
 				<div style={styles.container}>
-					{() => this.renderList()}
+					{this.renderList()}
 				</div>
 
 			</div>
@@ -81,7 +85,7 @@ const styles = {
 	card: {
 		top: 0,
 		margin: '10px',
-		maxWidth: 345
+		maxWidth: 300
 	},
 	media: {
 		width: '100%'
