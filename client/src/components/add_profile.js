@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import FormData from 'form-data';
+import FileUpload from './FileUpload';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {red300, blue400} from 'material-ui/styles/colors';
@@ -35,20 +35,13 @@ class AddProfile extends Component {
 		this.state = {
 			name: '',
 			description: '',
-			image: {}
-		}
+		};
 	}
 
 	handleInputChange = e => {
 		this.setState({
 			[e.target.name]: e.target.value
 		}, console.log(e.target.value));
-	};
-
-	handleImageChange = (e) => {
-		this.setState({
-			[e.target.name]: e.target.files[0],
-		}, console.log('File:', e.target.files[0]))
 	};
 
 	validate = () => {
@@ -64,30 +57,24 @@ class AddProfile extends Component {
 			...this.state,
 			...errors
 		});
-
 		return isError;
 	};
 
 	handleSubmit = (e) => {
 		e.preventDefault();
 		const err = this.validate();
-		const data = new FormData();
 		const payload = {...this.state};
-		const imagedata = document.querySelector('input[type="file"]').files[0];
-		console.log('Imagedata:', imagedata);
-		data.append("image", imagedata);
-		console.log('Data:', data);
+
 		if (!err) {
-			axios.post('http://localhost:4000/profiles/add_profile', payload, {
-				body: data
+			axios.post('http://localhost:4000/profiles/add_profile', {
 				})
 				.then((response) => {
 					this.setState({
 						serverMessage: response,
 						name: '',
 						description: '',
-						image: {}
-					})
+						preview: null
+					}, console.log('POST Response:', response))
 				})
 				.catch((error) => {
 					console.log(error)
@@ -105,7 +92,8 @@ class AddProfile extends Component {
 				/>
 
 				<div style={contentStyle.root}>
-					<form id="myForm"
+					<form
+
 					>
 						<TextField
 							name="name"
@@ -124,20 +112,12 @@ class AddProfile extends Component {
 							value={this.state.description}
 							onChange={(e) => this.handleInputChange(e)}
 						/>
-						<TextField
-							id="image"
-							value={this.state.image}
-							style={contentStyle.textField}
-						>
-							<input
-								name="image"
-								type="file"
-								encType="multipart/form-data"
-								accept="multipart/form-data"
-								onChange={(e) => this.handleImageChange(e)}
 
-							/>
-						</TextField>
+						<h5>Add an Image</h5>
+
+						<FileUpload
+							preview={this.props.preview}
+						/>
 
 						<RaisedButton
 							label="Submit"
@@ -149,7 +129,6 @@ class AddProfile extends Component {
 						</RaisedButton>
 					</form>
 				</div>
-
 			</div>
 		)
 	}
