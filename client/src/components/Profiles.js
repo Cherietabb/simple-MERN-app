@@ -12,14 +12,14 @@ class Profiles extends Component {
 
 		this.state = {
 			profiles: []
-		}
+		};
+		this.renderImage = this.renderImage.bind(this)
 	}
 
 	componentDidMount() {
 		const _this = this;
 		axios.get('http://localhost:4000/profiles')
 			.then(response => {
-				console.log(`Response ${response}`);
 				_this.setState({
 					profiles: response.data
 				})
@@ -27,6 +27,12 @@ class Profiles extends Component {
 			.catch((error) => {
 				console.log(error)
 			})
+	}
+	
+	renderImage() {
+		if(this.props.imageUrl) {
+			return <img src={'https://s3.us-east-2.amazonaws.com/simple-mern-app' + this.props.imageUrl} alt=""/>
+		}
 	}
 
 	renderList() {
@@ -44,7 +50,7 @@ class Profiles extends Component {
 					<CardMedia
 						style={styles.media}
 					>
-						<img src={profile.image} alt=""/>
+						<img src={this.renderImage()} alt=""/>
 					</CardMedia>
 					<div style={styles.cardText}>
 						<span className="card-title">{profile.name}</span>

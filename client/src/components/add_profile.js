@@ -36,6 +36,8 @@ class AddProfile extends Component {
 			name: '',
 			description: '',
 		};
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
 	}
 
 	handleInputChange = e => {
@@ -60,26 +62,33 @@ class AddProfile extends Component {
 		return isError;
 	};
 
-	handleSubmit = (e) => {
+	handleSubmit = (e, file) => {
 		e.preventDefault();
 		const err = this.validate();
 		const payload = {...this.state};
 
-		if (!err) {
-			axios.post('http://localhost:4000/profiles/add_profile', {
-				})
-				.then((response) => {
-					this.setState({
-						serverMessage: response,
-						name: '',
-						description: '',
-						preview: null
-					}, console.log('POST Response:', response))
-				})
-				.catch((error) => {
-					console.log(error)
-				});
-		}
+		axios.get('http://localhost:4000/profiles/upload')
+			.then((response) => {
+				let signedUrl = response.data.key;
+				if (!err) {
+					return axios.post('http://localhost:4000/profiles/add_profile', {
+							...payload,
+							imageUrl: signedUrl
+						})
+						.then((response) => {
+							this.setState({
+								serverMessage: response,
+								name: '',
+								description: '',
+							}, console.log('POST Response:', response))
+						})
+				}
+
+			})
+			.catch((error) => {
+				console.log(error)
+			});
+
 	};
 
 	render() {
@@ -92,9 +101,7 @@ class AddProfile extends Component {
 				/>
 
 				<div style={contentStyle.root}>
-					<form
-
-					>
+					<form>
 						<TextField
 							name="name"
 							hintText="Name"
@@ -115,9 +122,7 @@ class AddProfile extends Component {
 
 						<h5>Add an Image</h5>
 
-						<FileUpload
-							preview={this.props.preview}
-						/>
+						<FileUpload />
 
 						<RaisedButton
 							label="Submit"

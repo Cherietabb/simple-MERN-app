@@ -79,10 +79,10 @@ const contentStyles = {
 	button: {
 		backgroundColor: '#ECEFF1',
 		margin: '3px',
-		ripple: {
-			background: '#ECEFF1',
-			opacity: !('#ECEFF1' || '#78909C') ? 0.1 : 0.16,
-		},
+	},
+	ripple: {
+		background: '#ECEFF1',
+		opacity: !('#ECEFF1' || '#78909C') ? 0.1 : 0.16,
 	},
 };
 

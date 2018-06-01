@@ -10,9 +10,8 @@ const ProfileSchema = new Schema({
 		type: String
 	},
 	// store profile image
-	image: {
-		data: Buffer,
-		contentType: String
+	imageUrl: {
+		type: String
 	}
 });
 

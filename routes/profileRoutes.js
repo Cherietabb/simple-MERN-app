@@ -28,17 +28,23 @@ router.get('/upload', (req, res) => {
 			ContentType: 'image/jpeg'
 		},
 		((err, url) => res.send({ key, url }))
-
 	)
-
 });
 
 router.post("/add_profile", (req, res) => {
-	const profile = req.body;
+	const { name, description, imageUrl } = req.body;
 
-	Profile.create(profile)
-		.then((profile) => res.send({message: "Profile successfully created!"}))
-		.catch(err => res.status(500).send(err));
+	const profile  = new Profile({
+		imageUrl,
+		name,
+		description,
+	});
+
+	profile.save()
+		.then(profile => {
+			res.status(200).send(profile);
+		})
+		.catch(err => res.status(500).send('Unable to save to database'));
 });
 
 router.put('/edit/:id', (req, res, next) => {

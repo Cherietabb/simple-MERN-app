@@ -17,9 +17,6 @@ class FileUpload extends Component {
 
 		this.state = {
 			preview: null,
-			accepted: [],
-			rejected: [],
-			file: null
 		};
 		this.handleDrop = this.handleDrop.bind(this)
 	}
