@@ -67,28 +67,19 @@ class AddProfile extends Component {
 		const err = this.validate();
 		const payload = {...this.state};
 
-		axios.get('http://localhost:4000/profiles/upload')
-			.then((response) => {
-				let signedUrl = response.data.key;
-				if (!err) {
-					return axios.post('http://localhost:4000/profiles/add_profile', {
-							...payload,
-							imageUrl: signedUrl
-						})
-						.then((response) => {
-							this.setState({
-								serverMessage: response,
-								name: '',
-								description: '',
-							}, console.log('POST Response:', response))
-						})
-				}
-
-			})
-			.catch((error) => {
-				console.log(error)
-			});
-
+		if (!err) {
+			return axios.post('http://localhost:4000/profiles/add_profile', payload)
+				.then((response) => {
+					this.setState({
+						serverMessage: response,
+						name: '',
+						description: '',
+					}, console.log('POST Response:', response))
+				})
+				.catch((error) => {
+					console.log(error)
+				});
+		}
 	};
 
 	render() {
@@ -108,7 +99,7 @@ class AddProfile extends Component {
 							floatingLabelText="Name"
 							style={contentStyle.textField}
 							value={this.state.name}
-							onChange={(e) => this.handleInputChange(e)}
+							onChange={this.handleInputChange}
 							errorText={this.state.nameError}
 						/>
 						<TextField
@@ -117,19 +108,22 @@ class AddProfile extends Component {
 							floatingLabelText="Description"
 							style={contentStyle.textField}
 							value={this.state.description}
-							onChange={(e) => this.handleInputChange(e)}
+							onChange={this.handleInputChange}
 						/>
 
 						<h5>Add an Image</h5>
 
-						<FileUpload />
+						<FileUpload
+
+
+						/>
 
 						<RaisedButton
 							label="Submit"
 							value="Submit"
 							primary={true}
 							style={contentStyle.textField}
-							onClick={(e) => this.handleSubmit(e)}
+							onClick={this.handleSubmit}
 						>
 						</RaisedButton>
 					</form>

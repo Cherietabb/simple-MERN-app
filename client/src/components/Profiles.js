@@ -13,7 +13,7 @@ class Profiles extends Component {
 		this.state = {
 			profiles: []
 		};
-		this.renderImage = this.renderImage.bind(this)
+		// this.renderImage = this.renderImage.bind(this)
 	}
 
 	componentDidMount() {
@@ -29,11 +29,13 @@ class Profiles extends Component {
 			})
 	}
 	
+/*
 	renderImage() {
-		if(this.props.imageUrl) {
-			return <img src={'https://s3.us-east-2.amazonaws.com/simple-mern-app' + this.props.imageUrl} alt=""/>
+		if(this.props.profile.imageUrl) {
+			return <img src={'https://s3.us-east-2.amazonaws.com/simple-mern-app/' + this.props.profile.imageUrl} alt=""/>
 		}
 	}
+*/
 
 	renderList() {
 		const {profiles} = this.state;
@@ -50,7 +52,7 @@ class Profiles extends Component {
 					<CardMedia
 						style={styles.media}
 					>
-						<img src={this.renderImage()} alt=""/>
+						<img src={'https://s3.us-east-2.amazonaws.com/simple-mern-app/' + profile.imageUrl} alt=""/>
 					</CardMedia>
 					<div style={styles.cardText}>
 						<span className="card-title">{profile.name}</span>

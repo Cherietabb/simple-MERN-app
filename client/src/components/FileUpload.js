@@ -17,8 +17,10 @@ class FileUpload extends Component {
 
 		this.state = {
 			preview: null,
+			file: null
 		};
-		this.handleDrop = this.handleDrop.bind(this)
+		this.handleDrop = this.handleDrop.bind(this);
+		// this.handleImageSubmit = this.handleImageSubmit.bind(this);
 	}
 
 	handleDrop([{preview}], files, event) {
@@ -26,6 +28,18 @@ class FileUpload extends Component {
 		this.setState({
 			preview,
 		}, console.log('Preview image', preview));
+
+
+		/*
+		 handleImageSubmit = () => {
+		 const fd = FormData();
+		 fd.append('file', this.state.file, this.state.file.name);
+		 axios.post('http://localhost:4000/profiles/add_profile', fd)
+		 .then(res => {
+		 console.log(res)
+		 })
+		 };
+		 */
 
 		axios.get('http://localhost:4000/profiles/upload', {
 				filename: file.name,
@@ -42,8 +56,8 @@ class FileUpload extends Component {
 			})
 			.then((response) => {
 				console.log(response)
-			})
-	}
+			});
+	};
 
 	render() {
 		const {preview} = this.state;
@@ -62,7 +76,6 @@ class FileUpload extends Component {
 					}
 
 					<p>{preview ? '' : 'Drag a image or click to upload an image...'}</p>
-
 				</Dropzone>
 				<br/>
 			</div>
