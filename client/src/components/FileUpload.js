@@ -17,29 +17,16 @@ class FileUpload extends Component {
 
 		this.state = {
 			preview: null,
-			file: null
 		};
 		this.handleDrop = this.handleDrop.bind(this);
-		// this.handleImageSubmit = this.handleImageSubmit.bind(this);
 	}
 
 	handleDrop([{preview}], files, event) {
+		const object = this;
 		let file = event.target.files[0];
 		this.setState({
 			preview,
 		}, console.log('Preview image', preview));
-
-
-		/*
-		 handleImageSubmit = () => {
-		 const fd = FormData();
-		 fd.append('file', this.state.file, this.state.file.name);
-		 axios.post('http://localhost:4000/profiles/add_profile', fd)
-		 .then(res => {
-		 console.log(res)
-		 })
-		 };
-		 */
 
 		axios.get('http://localhost:4000/profiles/upload', {
 				filename: file.name,
@@ -47,6 +34,8 @@ class FileUpload extends Component {
 			})
 			.then((response) => {
 				let signedUrl = response.data.url;
+				let signedKey = response.data.key;
+				object.props.transferKey(signedKey);
 				let options = {
 					headers: {
 						'Content-type': file.type
@@ -66,8 +55,6 @@ class FileUpload extends Component {
 				<Dropzone
 					multiple={false}
 					accept="image/jpeg, image/png, image.jpg"
-					name="file"
-					value={this.state.file}
 					onDrop={this.handleDrop}
 					onDropRejected={ handleDropRejected }
 				>

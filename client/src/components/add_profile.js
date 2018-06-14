@@ -35,9 +35,11 @@ class AddProfile extends Component {
 		this.state = {
 			name: '',
 			description: '',
+			imageUrl: ''
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleChild = this.handleChild.bind(this);
 	}
 
 	handleInputChange = e => {
@@ -62,12 +64,20 @@ class AddProfile extends Component {
 		return isError;
 	};
 
-	handleSubmit = (e, file) => {
+	handleChild (k) {
+		let stateCopy = Object.assign({}, this.state);
+		stateCopy.imageUrl = k;
+		this.setState(stateCopy);
+	}
+
+	handleSubmit = (e) => {
 		e.preventDefault();
 		const err = this.validate();
 		const payload = {...this.state};
 
 		if (!err) {
+			console.log(payload);
+			console.log(this.state.imageUrl);
 			return axios.post('http://localhost:4000/profiles/add_profile', payload)
 				.then((response) => {
 					this.setState({
@@ -114,8 +124,7 @@ class AddProfile extends Component {
 						<h5>Add an Image</h5>
 
 						<FileUpload
-
-
+							transferKey={this.handleChild}
 						/>
 
 						<RaisedButton
