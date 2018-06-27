@@ -65,7 +65,7 @@ class AddProfile extends Component {
 	};
 
 	handleChild (k) {
-		let stateCopy = Object.assign({}, this.state);
+		let stateCopy = {...this.state};
 		stateCopy.imageUrl = k;
 		this.setState(stateCopy);
 	}
@@ -119,6 +119,7 @@ class AddProfile extends Component {
 							style={contentStyle.textField}
 							value={this.state.description}
 							onChange={this.handleInputChange}
+						  maxLength={50}
 						/>
 
 						<h5>Add an Image</h5>

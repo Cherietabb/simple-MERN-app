@@ -43,7 +43,7 @@ class Profiles extends Component {
 					<CardMedia
 						style={styles.media}
 					>
-						<img src={'https://s3.us-east-2.amazonaws.com/simple-mern-app/' + profile.imageUrl} alt="profile"/>
+						<img src={'https://s3.us-east-2.amazonaws.com/simple-mern-app/' + profile.imageUrl} style={styles.img} alt="profile"/>
 					</CardMedia>
 					<div style={styles.cardText}>
 						<span className="card-title">{profile.name}</span>
@@ -88,6 +88,10 @@ const styles = {
 	},
 	media: {
 		width: '100%'
+	},
+	img: {
+		width: '300px',
+		height: '225px'
 	},
 	cardText: {
 		padding: '5px',

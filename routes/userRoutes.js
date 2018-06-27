@@ -2,19 +2,6 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
-// const jwt = require('jsonwebtoken');
-
-/*
- const loggedInOnly = (req, res, next) => {
- if (req.isAuthenticated()) next();
- else res.redirect("/login");
- };
-
- const loggedOutOnly = (req, res, next) => {
- if (req.isUnauthenticated()) next();
- else res.redirect("/");
- };
- */
 
 // Register form
 router.get('/register', function(req, res, next) {
@@ -23,15 +10,24 @@ router.get('/register', function(req, res, next) {
 	}).catch(next);
 });
 
-router.post('/register', function(req, res, next) {
-	User.create(req.body)
-		.then((user) => {
-		passport.authenticate('local', (req, res) => {
-			res.send(user)
-		});
-			console.log(user)
+router.post('/register', function(req, res) {
+	const { name, email, username, password } = req.body;
+	console.log(req.body);
+
+	const user = new User({
+		name,
+		email,
+		username,
+		password
+	});
+
+	console.log(user);
+
+	user.save()
+		.then(user => {
+				res.send(user)
 		})
-		.catch(next);
+		.catch(err => res.send( err));
 
 });
 
@@ -60,8 +56,6 @@ router.get('/forgot', (req, res) => {
 		user: req.user
 	});
 });
-
-// router.put('/update', (req, res))
 
 module.exports = router;
 
