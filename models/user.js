@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcryptjs');
+const uniqueValidator = require('mongoose-unique-validator');
+
 const Schema = mongoose.Schema;
 
 const SALT_FACTOR = 10;
@@ -29,7 +30,7 @@ const UserSchema = new Schema({
 	}
 });
 
-UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
+// UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 
 UserSchema.pre('save', function(next) {
 	let user = this;

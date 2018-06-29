@@ -11,20 +11,23 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-	User.findById(id)
+	User.findById(id) 
 		.then(user => {
 			done(null, user);
 		})
 });
 
 
-passport.use(new LocalStrategy((username, password, done) => {
-	User.findOne({ username })
-		.then(user => {
-			if(!user || user.comparePassword(password)) {
-				done(null, false, {message: 'Invalid username/password'});
-			} else {
-				done(null, user)
+passport.use(new LocalStrategy(
+	function(username, password, done) {
+		User.findOne({ username }, function (err, user) {
+			if (err) { return done(err); }
+			if (!user) {
+				return done(null, false); }
+			if (!user.comparePassword(password)) {
+				return done(null, false, {message: 'Invalid password'});
 			}
-		})
-}));
+			return done(null, user);
+		});
+	}
+));
