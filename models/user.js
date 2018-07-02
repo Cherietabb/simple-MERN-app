@@ -15,13 +15,13 @@ const UserSchema = new Schema({
 		type: String,
 		required: [true, 'email field is required'],
 		match: [/\S+@\S+\.\S+/, 'is invalid'],
+		unique: true,
 		index: true
 	},
 	username: {
 		type: String,
 		required: [true, 'A username is required'],
 		match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
-		unique: true,
 		index: true
 	},
 	password: {
@@ -30,30 +30,30 @@ const UserSchema = new Schema({
 	}
 });
 
-// UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
+UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function (next) {
 	let user = this;
 
 	if (!user.isModified('password')) return next();
 
-	bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
+	bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
+		if (err) return next(err);
+		bcrypt.hash(user.password, salt, function (err, hash) {
 			if (err) return next(err);
-			bcrypt.hash(user.password, salt, function(err, hash) {
-				if (err) return next(err);
-				user.password = hash;
-				next();
-			});
+			user.password = hash;
+			next();
 		});
+	});
 });
 
 UserSchema.pre('update', function (next) {
 	let user = this;
 
-	bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
-		if(err) return next(err);
+	bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
+		if (err) return next(err);
 		bcrypt.hash(user.password, salt, function (err, hash) {
-			if(err) return next(err);
+			if (err) return next(err);
 			user.password = hash;
 			next();
 		});
