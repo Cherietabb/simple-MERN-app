@@ -18,14 +18,6 @@ router.get('/', (req, res, next) => {
 	}
 });
 
-
-// Register form
-router.get('/register', function (req, res, next) {
-	res.render('register', {
-		user: req.user
-	}).catch(next);
-});
-
 router.post('/register', function (req, res) {
 	const {name, email, username, password} = req.body;
 	console.log(req.body);
@@ -39,9 +31,9 @@ router.post('/register', function (req, res) {
 
 	user.save()
 		.then(user => {
-			res.send(user)
+			res.send({message: 'new user created!'})
 		})
-		.catch(err => res.send(err));
+		.catch(err => res.send({message: 'Error creating new user', err}));
 
 });
 
@@ -72,6 +64,7 @@ router.post('/login', (req, res, next) => {
 
 router.get('/logout', (req, res) => {
 	console.log('Logging out');
+
 	req.logout();
 	res.send({message: 'logged out'})
 });

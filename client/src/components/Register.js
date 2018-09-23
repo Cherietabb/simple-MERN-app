@@ -13,7 +13,10 @@ class Register extends Component {
 			email: '',
 			username: '',
 			password: null
-		}
+		};
+		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
 	}
 
 	handleInputChange = e => {
@@ -29,7 +32,7 @@ class Register extends Component {
 			name: '',
 			email: '',
 			username: '',
-			password: null
+			password: ''
 		})
 	};
 
@@ -66,7 +69,6 @@ class Register extends Component {
 			...this.state,
 			...errors
 		});
-
 		return isError;
 	};
 
@@ -75,22 +77,27 @@ class Register extends Component {
 		const err = this.validate();
 		const payload = {...this.state};
 		console.log('Payload:', payload);
-		if (!err) {
-			axios.post('http://localhost:4000/users/register', payload)
-				console.log('Is code getting here?')
-				.then((response) => {
-					this.setState({
-						serverMessage: response,
-						name: '',
-						email: '',
-						username: '',
-						password: null
-					})
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-		}
+
+		console.log('Will something go wrong?');
+		console.log(this.state.email);
+		console.log('Something is very wrong!');
+		return axios.post('http://localhost:4000/users/register', payload, {
+				headers: {
+					'Content-type': 'Application/json'
+				}
+			})
+			.then((response) => {
+				this.setState({
+					serverMessage: response,
+					name: '',
+					email: '',
+					username: '',
+					password: ''
+				}, console.log('response: ', response))
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	};
 
 	render() {
