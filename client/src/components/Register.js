@@ -12,7 +12,7 @@ class Register extends Component {
 			name: '',
 			email: '',
 			username: '',
-			password: null
+			password: ''
 		};
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,7 +23,7 @@ class Register extends Component {
 		e.preventDefault();
 		this.setState({
 			[e.target.name]: e.target.value
-		});
+		}, console.log({[e.target.name]: e.target.value}));
 	};
 
 	handleCancel = (e) => {
@@ -77,27 +77,30 @@ class Register extends Component {
 		const err = this.validate();
 		const payload = {...this.state};
 		console.log('Payload:', payload);
+		if(!err) {
+			return axios.post('http://localhost:4000/users/register', payload, {
+					headers: {
+						'Content-type': 'Application/json',
+						'Access-Control-Allow-Origin': '*'
+					}
+				})
+				.then((response) => {
+					this.setState({
+						serverMessage: response,
 
-		console.log('Will something go wrong?');
-		console.log(this.state.email);
-		console.log('Something is very wrong!');
-		return axios.post('http://localhost:4000/users/register', payload, {
-				headers: {
-					'Content-type': 'Application/json'
-				}
-			})
-			.then((response) => {
-				this.setState({
-					serverMessage: response,
-					name: '',
-					email: '',
-					username: '',
-					password: ''
-				}, console.log('response: ', response))
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+						}, console.log('response: ', response),
+					);
+					this.props.history.push({
+						pathname: '/',
+
+					})
+
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+
+		}
 	};
 
 	render() {
@@ -145,11 +148,10 @@ class Register extends Component {
 							hintText="Password"
 							floatingLabelText="Password"
 							style={contentStyle.textField}
-
+							type="password"
 							value={this.state.password}
 							onChange={this.handleInputChange}
-							errorText={this.state.password}>
-							<input type="password"/>
+							errorText={this.state.passwordError}>
 						</TextField>
 
 						<RaisedButton
