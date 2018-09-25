@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {red300, blue400} from 'material-ui/styles/colors';
@@ -33,11 +34,13 @@ class Login extends Component {
 		super(props);
 
 		this.state = {
-			name: '',
 			email: '',
-			username: '',
 			password: ''
-		}
+		};
+
+		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleInputChange = e => {
@@ -49,20 +52,26 @@ class Login extends Component {
 	validate = () => {
 		let isError = false;
 		const errors = {
-			nameError: '',
 			emailError: '',
 			username: '',
-			password: ''
 		};
-		if (!this.state.name) {
+
+		if (!this.state.email) {
 			isError = true;
-			errors.nameError = "Name is required"
+			errors.emailError = 'Email is required'
+		} else if (!this.state.email === /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.email)) {
+			isError = true;
+			errors.emailError = 'Please enter a valid email address'
 		}
+		if (!this.state.password) {
+			isError = true;
+			errors.passwordError = 'Password is required'
+		}
+
 		this.setState({
 			...this.state,
 			...errors
 		});
-
 		return isError;
 	};
 
@@ -74,6 +83,24 @@ class Login extends Component {
 		})
 	};
 
+	handleSubmit = e => {
+		e.preventDefault();
+		const payload = {...this.state};
+		const err = this.validate();
+		if(!err) {
+			return axios.post('http://localhost:4000/users/login', payload, {
+				headers: {
+					'Content-type': 'Application/json',
+					'Access-Control-Allow-Origin': '*'
+				}
+			})
+				.then(response => {
+					this.setState({
+						serverResponse: response
+					}, console.log('response: ', response))
+				})
+		}
+	};
 
 	render() {
 		return (
@@ -101,11 +128,10 @@ class Login extends Component {
 							hintText="Password"
 							floatingLabelText="Password"
 							style={textFieldStyle}
-
+							type="password"
 							value={this.state.password}
 							onChange={this.handleInputChange}
 							errorText={this.state.password}>
-							<input type="password"/>
 						</TextField>
 
 						<RaisedButton

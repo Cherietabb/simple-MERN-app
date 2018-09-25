@@ -4,6 +4,14 @@ const passport = require('passport');
 const User = require('../models/user');
 require('../services/passport')(passport);
 
+isLoggedIn = (req, res, next) => {
+	if (req.isAuthenticated()) {
+		return next();
+	} else {
+		res.redirect('/');
+	}
+};
+
 router.get('/', (req, res, next) => {
 	if (req.user) {
 		return res.status(200).json({
@@ -19,13 +27,11 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/register', function (req, res) {
-	const {name, email, username, password} = req.body;
+	const {email, password} = req.body;
 	console.log(req.body);
 
 	const user = new User({
-		name,
 		email,
-		username,
 		password
 	});
 
@@ -43,9 +49,12 @@ router.get('/login', (req, res, next) => {
 	}).catch(next);
 });
 
+
 router.post('/login', (req, res, next) => {
+	const {email, password} = req.body;
 	passport.authenticate('local', function (err, user, info) {
-		console.log('/login handler', req.body);
+		console.log('/login', user);
+		console.log(user);
 		console.log(info);
 		if (err) {
 			return next(err);

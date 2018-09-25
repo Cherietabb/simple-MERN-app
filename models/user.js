@@ -7,21 +7,11 @@ const Schema = mongoose.Schema;
 const SALT_FACTOR = 10;
 
 const UserSchema = new Schema({
-	name: {
-		type: String,
-		required: [true, 'Name field is required']
-	},
 	email: {
 		type: String,
 		required: [true, 'email field is required'],
 		match: [/\S+@\S+\.\S+/, 'is invalid'],
 		unique: true,
-		index: true
-	},
-	username: {
-		type: String,
-		required: [true, 'A username is required'],
-		match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
 		index: true
 	},
 	password: {

@@ -103,3 +103,8 @@ crashlytics-build.properties
 fabric.properties
 
 /config/dev.js
+
+.floo
+.flooignore
+client/etc/
+tmp/

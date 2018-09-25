@@ -31,13 +31,20 @@ db.on('error', (err) => {
 
 app.use(bodyParser.json());
 
+app.enable('trust proxy');
+app.set('trust proxy', true);
+
 app.use(session({
 	secret: keys.cookieSession,
 	resave: false,
 	secure: true,
 	saveUninitialized: true,
-	cookie: { secure: true },
-	maxAge: 30 * 24 * 60 * 60 * 1000
+	secureProxy: true,
+	cookie: {
+		secure: true,
+		maxAge: 30 * 24 * 60 * 60 * 1000
+	}
+
 }));
 
 app.use((err, req, res, next) => {

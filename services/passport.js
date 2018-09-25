@@ -2,11 +2,10 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const User = require('../models/user');
-const bcrypt = require('bcryptjs');
 
 module.exports = function (passport) {
 	passport.serializeUser((user, done) => {
-		done(null, user.id);
+		done(null, user._id);
 	});
 
 	passport.deserializeUser((id, done) => {
@@ -17,13 +16,14 @@ module.exports = function (passport) {
 	});
 
 
+
 	passport.use(new LocalStrategy({
-		usernameField: 'username',
-		passwordField: 'password',
+		_usernameField: 'email',
+		_passwordField: 'password',
 		session: false,
 		passReqToCallback : true
-	}, (username, password, done) => {
-			return User.findOne({username}, function (err, user) {
+	}, (email, password, done) => {
+			return User.findOne({email}, function (err, user) {
 				if (err) {
 					return done(err);
 				}

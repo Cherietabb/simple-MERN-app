@@ -9,9 +9,7 @@ class Register extends Component {
 		super(props);
 
 		this.state = {
-			name: '',
 			email: '',
-			username: '',
 			password: ''
 		};
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -29,9 +27,7 @@ class Register extends Component {
 	handleCancel = (e) => {
 		e.preventDefault();
 		this.setState({
-			name: '',
 			email: '',
-			username: '',
 			password: ''
 		})
 	};
@@ -40,25 +36,15 @@ class Register extends Component {
 	validate = () => {
 		let isError = false;
 		const errors = {
-			nameError: '',
 			emailError: '',
-			usernameError: '',
 			passwordError: ''
 		};
-		if (!this.state.name) {
-			isError = true;
-			errors.nameError = "Name is required"
-		}
 		if (!this.state.email) {
 			isError = true;
 			errors.emailError = 'Email is required'
 		} else if (!this.state.email === /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.state.email)) {
 			isError = true;
 			errors.emailError = 'Please enter a valid email address'
-		}
-		if (!this.state.username) {
-			isError = true;
-			errors.usernameError = 'Username is required'
 		}
 		if (!this.state.password) {
 			isError = true;
@@ -115,15 +101,6 @@ class Register extends Component {
 				<div style={contentStyle.root}>
 					<form>
 						<TextField
-							name="name"
-							hintText="Name"
-							floatingLabelText="Name"
-							style={contentStyle.textField}
-							value={this.state.name}
-							onChange={this.handleInputChange}
-							errorText={this.state.nameError}
-						/>
-						<TextField
 							name="email"
 							hintText="Email"
 							floatingLabelText="Email"
@@ -131,16 +108,6 @@ class Register extends Component {
 							value={this.state.email}
 							onChange={this.handleInputChange}
 							errorText={this.state.emailError}
-						/>
-
-						<TextField
-							name="username"
-							hintText="Username"
-							floatingLabelText="Username"
-							style={contentStyle.textField}
-							value={this.state.username}
-							onChange={this.handleInputChange}
-							errorText={this.state.usernameError}
 						/>
 
 						<TextField
